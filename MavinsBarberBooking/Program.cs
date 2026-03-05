@@ -1,3 +1,4 @@
+using MavinsBarberBooking.Services;
 using Microsoft.Data.SqlClient;
 using System.Data;
 
@@ -9,6 +10,15 @@ builder.Services.AddControllersWithViews();
 // Register Dapper/SQL Connection
 builder.Services.AddTransient<IDbConnection>((sp) => 
     new SqlConnection(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Email Service
+builder.Services.AddScoped<IEmailService, EmailService>();
+
+// Session support
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+});
 
 var app = builder.Build();
 
@@ -27,8 +37,12 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.UseSession();
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Account}/{action=Register}/{id?}");
+
+
 
 app.Run();
