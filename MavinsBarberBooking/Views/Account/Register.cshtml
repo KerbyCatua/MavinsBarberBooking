@@ -5,7 +5,7 @@
 }
 
 <head>
-    <link href="~/css/Register.css" rel="stylesheet" />
+    <link href="~/css/account/Register.css" rel="stylesheet" />
 </head>
 
 <h1>Register</h1>
@@ -32,13 +32,19 @@
 
     <div>
         <label asp-for="Password"></label>
-        <input asp-for="Password" type="password" />
+        <div class="password-container">
+            <input asp-for="Password" id="password" type="password" class="form-control" minlength="8" />
+            <i class="fa-regular fa-eye toggle-password" onclick="toggleVisibility('password', this)"></i>
+        </div>
         <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
     <div>
         <label asp-for="ConfirmPassword"></label>
-        <input asp-for="ConfirmPassword" type="password" />
+        <div class="password-container">
+            <input asp-for="ConfirmPassword" id="confirmPassword" type="password" class="form-control" minlength="8" />
+            <i class="fa-regular fa-eye toggle-password" onclick="toggleVisibility('confirmPassword', this)"></i>
+        </div>
         <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
     </div>
 
@@ -46,6 +52,8 @@
     <p>Already Have an Account? <a href="/Account/Login">Login</a></p>
         
 </form>
+
+<script src="~/js/account/Register.js"></script>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

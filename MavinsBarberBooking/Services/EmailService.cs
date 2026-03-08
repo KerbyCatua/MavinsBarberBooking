@@ -38,7 +38,7 @@ namespace MavinsBarberBooking.Services
                 var smtpUsername = smtpSettings["Username"];
                 var smtpPassword = smtpSettings["Password"];
                 var senderEmail = smtpSettings["SenderEmail"];
-
+                    
                 if (string.IsNullOrEmpty(smtpServer) || string.IsNullOrEmpty(smtpUsername) || string.IsNullOrEmpty(smtpPassword))
                 {
                     _logger.LogError("SMTP settings are not configured properly");
@@ -54,9 +54,9 @@ namespace MavinsBarberBooking.Services
 
                     var mailMessage = new MailMessage(senderEmail, email)
                     {
-                        Subject = "Email Verification - Mavins Barber Booking",
+                        Subject = "Mavins Barber Booking",
                         Body = $@"
-                            <h2>Email Verification</h2>
+                            <h1>Email Verification</h1>
                             <p>Thank you for registering with Mavins Barber Booking!</p>
                             <p>Your verification code is: <strong>{verificationCode}</strong></p>
                             <p>This code will expire in 15 minutes.</p>
