@@ -1,11 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using MavinsBarberBooking.Models.ViewModels;
-using MavinsBarberBooking.Models.Entities;
-using MavinsBarberBooking.Services;
-
-using BCrypt.Net;
-
+﻿using BCrypt.Net;
 using Dapper;
+using MavinsBarberBooking.Models.Entities;
+using MavinsBarberBooking.Models.ViewModels;
+using MavinsBarberBooking.Services;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System.Data;
 
 namespace MavinsBarberBooking.Controllers
@@ -68,20 +67,36 @@ namespace MavinsBarberBooking.Controllers
             HttpContext.Session.SetString("TempPassword", model.Password);
 
             TempData["SuccessMessage"] = "Verification code sent to your email. Please check your inbox.";
-            return RedirectToAction("VerifyEmail");
+            return RedirectToAction("VerifyEmail", new { email = model.Email } );
         }
 
         [HttpGet]
-        public IActionResult VerifyEmail()
+        public IActionResult VerifyEmail(string email)
         {
-            ViewData["Email"] = HttpContext.Session.GetString("TempEmail") ?? null;
+            
+            if (string.IsNullOrEmpty(email)) return RedirectToAction("Register");
+
+            if (TempData["ErrorMessage"] != null)
+            {
+                ModelState.AddModelError("VerificationCode", TempData["ErrorMessage"]?.ToString() ?? string.Empty);
+            }
+
+            ViewData["Email"] = email;
             return View();
         }
 
         [HttpPost]
-        public IActionResult VerifyEmail(string verificationCode)
+        public IActionResult VerifyEmail(string email, string verificationCode)
         {
-            var email = HttpContext.Session.GetString("TempEmail");
+            var pending = _db.QueryFirstOrDefault<string>(
+            "SELECT * FROM EmailVerifications WHERE Email = @Email",
+            new { Email = email });
+
+            if (pending == null)
+            {
+                ModelState.AddModelError("", "Registration not found. Please register again.");
+                return RedirectToAction("Register");
+            }
 
             if (string.IsNullOrEmpty(email))
             {
@@ -100,8 +115,8 @@ namespace MavinsBarberBooking.Controllers
 
             if (verification == null)
             {
-                ModelState.AddModelError("VerificationCode", "Invalid or expired verification code.");
-                return View();
+                TempData["ErrorMessage"] = "Invalid or expired verification code.";
+                return RedirectToAction("VerifyEmail", new { email = email } );
             }
 
             // Mark code as used

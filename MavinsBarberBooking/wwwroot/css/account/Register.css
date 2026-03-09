@@ -1,114 +1,135 @@
-﻿
-/* Icon: Eye For Password */
-.password-container {
+﻿/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden; /* Prevent horizontal scroll from large 'M' */
+}
+
+.register-background {
+    position: relative; /* Context for absolute images */
+    background: linear-gradient(to bottom, #d1d1d1, #212121); /* Matches your gray-to-dark gradient */
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 1.386rem;
+    padding-right: 10%; /* Adjust right spacing to match login prototype */
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+/* The Large 'M' Scissors Background */
+.mavins-tab-logo {
+    position: absolute;
+    left: 5%;
+    top: 20%;
+    transform: translateY(-20%); /* Matches your login positioning */
+    width: 60vw;
+    max-width: 800px;
+    min-width: 400px; /* Keeps 'M' visible when folded */
+    height: auto;
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* The "It's more than just a haircut" Text Image */
+.mavins-line {
+    position: absolute;
+    left: 5vw;
+    top: 12%;
+    width: 35vw;
+    max-width: 500px;
+    min-width: 250px;
+    height: auto;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.register-card {
     position: relative;
+    z-index: 2; /* Keeps card above the background art */
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    padding: 1.6632rem;
+    width: 100%;
+    max-width: 380px; /* Matched to your login card width */
+}
+
+.form-control-custom {
+    padding: 0.5544rem 0.7854rem; /* Increased 5% */
+    border-radius: 6px;
+    font-size: 0.8316rem; /* Increased 5% */
+    border: 1px solid #ddd;
 }
 
 .toggle-password {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    cursor: pointer;
-    z-index: 10;
+    font-size: 0.8778rem; /* Increased 5% */
+    transition: color 0.2s ease;
 }
 
-
-
-
-
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f9;
-}
-
-/* Title */
-h1 {
-    text-align: center;
-    margin-top: 40px;
-    color: #333;
-}
-
-/* Center the form on page */
-form {
-    position: absolute;
-    left: 50%;
-    top: 52%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 30px 35px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    width: 340px;
-}
-
-    /* spacing for fields */
-    form div {
-        margin-bottom: 15px;
+    .toggle-password:hover {
+        color: #333 !important;
     }
 
-/* labels */
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #444;
-}
-
-/* inputs */
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
-}
-
-    /* focus effect */
-    input:focus {
-        border-color: #1a73e8;
-        outline: none;
-        box-shadow: 0 0 4px rgba(26,115,232,0.4);
+    .toggle-password:active {
+        color: #000 !important;
     }
 
-/* register button */
-button {
-    width: 100%;
-    padding: 11px;
-    background: #1a73e8;
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
-    margin-top: 5px;
+/* Form input customization */
+.form-control-custom:focus {
+    border-color: #333;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
 }
 
-    button:hover {
-        background: #1558b0;
+/* ── Responsive Adjustments ── */
+@media (max-width: 992px) {
+    .mavins-line,
+    .mavins-tab-logo {
+        opacity: 0.3; /* Fade out as it goes behind the card */
+    }
+}
+
+@media (max-width: 768px) {
+    /* Hide decorative images on mobile for better form focus */
+    .mavins-line,
+    .mavins-tab-logo {
+        opacity: 0.15;
     }
 
-/* login text */
-p {
-    text-align: center;
-    margin-top: 12px;
-    font-size: 14px;
-}
-
-/* login link */
-a {
-    color: #1a73e8;
-    text-decoration: none;
-}
-
-    a:hover {
-        text-decoration: underline;
+    .register-background {
+        justify-content: center;
+        padding-right: 1.386rem;
     }
 
-/* validation */
-.text-danger {
-    color: red;
-    font-size: 12px;
+    .register-card {
+        margin-right: 0;
+    }
 }
+
+/* Responsive adjustments for mobile */
+@media (max-width: 576px) {
+
+    .mavins-line,
+    .mavins-tab-logo {
+        display: none;
+    }
+
+    .register-card {
+        padding: 1.386rem; /* Increased 5% */
+        margin-right: 0;
+    }
+
+    .register-background {
+        justify-content: center;
+        padding: 0.924rem; /* Increased 5% */
+    }
+}
+
+

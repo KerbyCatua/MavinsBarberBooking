@@ -1,93 +1,139 @@
-﻿body {
-    font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f9;
+﻿/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    overflow-x: hidden; 
+    overflow-y: hidden;
 }
 
-/* Page title */
-h1 {
-    text-align: center;
-    margin-top: 40px;
-    color: #333;
-}
-
-/* Center login form */
-form {
+/* The Large 'M' Scissors Background */
+.mavins-tab-logo {
     position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
+    left: 5%;
+    /* Change bottom to top to stop the 'sliding' effect */
+    top: 20%;
+    transform: translateY(-20%); /* Fine-tune the vertical 'hanging' position */
+    /* Using vw for width ensures it scales with horizontal 'folding' */
+    width: 60vw;
+    max-width: 800px;
+    min-width: 400px; /* Prevents it from disappearing when the web is folded thin */
+
+    height: auto;
+    opacity: 0.1;
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* The "It's more than just a haircut" Text Image */
+.mavins-line {
+    position: absolute;
+    left: 5vw;
+    top: 12%; /* Use % instead of vh for more consistent scaling with the M */
+    width: 35vw;
+    max-width: 500px;
+    min-width: 250px;
+    height: auto;
+    z-index: 1;
+}
+
+.login-background {
+    position: relative; /* Context for absolute children */
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to bottom, #d1d1d1, #212121); /* Matches your gray-to-dark gradient */
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Pushes the login card to the right */
+    padding-right: 10%;
+    overflow: hidden;
+}
+
+/* The White Login Card */
+.login-card {
+    position: relative;
+    z-index: 2; /* Ensure it stays on top of everything */
     background: white;
-    padding: 30px 35px;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-    width: 340px;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    width: 380px;
 }
 
-    /* spacing between inputs */
-    form div {
-        margin-bottom: 18px;
-    }
-
-/* labels */
-label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 6px;
-    color: #444;
-}
-
-/* input fields */
-input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
+.form-control-custom {
+    padding: 0.75rem 1rem;
     border-radius: 6px;
-    font-size: 14px;
-    box-sizing: border-box;
+    font-size: 0.9rem;
+    border: 1px solid #ddd;
 }
 
-    /* input focus */
-    input:focus {
-        border-color: #1a73e8;
-        outline: none;
-        box-shadow: 0 0 4px rgba(26,115,232,0.4);
+.toggle-password {
+    font-size: 1rem;
+    transition: color 0.2s ease;
+}
+
+    .toggle-password:hover {
+        color: #333 !important;
     }
 
-/* login button */
-button {
-    width: 100%;
-    padding: 11px;
-    background: #1a73e8;
-    border: none;
-    border-radius: 6px;
-    color: white;
-    font-size: 15px;
-    cursor: pointer;
+    .toggle-password:active {
+        color: #000 !important;
+    }
+/* Form input customization */
+.form-control-custom:focus {
+    border-color: #333;
+    box-shadow: 0 0 0 0.2rem rgba(0, 0, 0, 0.1);
 }
 
-    button:hover {
-        background: #1558b0;
+/* Responsive adjustments for mobile */
+@media (max-width: 576px) {
+    .login-card {
+        padding: 2rem;
+        margin-right: 0;
     }
 
-/* bottom text */
-p {
-    text-align: center;
-    margin-top: 14px;
-    font-size: 14px;
+    .login-background {
+        justify-content: center;
+        padding: 1rem;
+    }
 }
 
-/* links */
-a {
-    color: #1a73e8;
-    text-decoration: none;
-}
-
-    a:hover {
-        text-decoration: underline;
+/*Mobile Layout*/
+@media (max-width: 768px) {
+    .mavins-line,
+    .mavins-tab-logo {
+        display: none;
     }
 
-/* validation messages */
-.text-danger {
-    color: red;
-    font-size: 12px;
+    .login-background {
+        justify-content: center;
+        padding: 20px;
+    }
+}
+
+
+@media (max-width: 992px) {
+    .mavins-line {
+        width: 40vw;
+        opacity: 0.3; 
+    }
+
+    .mavins-tab-logo {
+        width: 70vw;
+    }
+}
+
+@media (max-width: 892px) {
+    .mavins-line, .mavins-tab-logo {
+        opacity: 0.2;
+    }
+}
+
+@media (max-width: 792px) {
+    .mavins-line, .mavins-tab-logo {
+        opacity: 0.1;
+    }
 }

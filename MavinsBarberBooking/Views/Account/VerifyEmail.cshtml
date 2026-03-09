@@ -1,38 +1,66 @@
 @model MavinsBarberBooking.Models.Entities.EmailVerification
 
 @{
-
+    ViewData["Title"] = "VerifyEmail";
+    Layout = null;
 }
 
+<!DOCTYPE html>
+<html>
 <head>
-    <link href="~/css/account/VerifyEmail.css" rel="stylesheet" />
-</head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MavinsBarberBooking</title>
+    <link rel="icon" type="image/x-icon" href="~/images/logos/mavins-tab-logo.png" />
 
-<div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2>Verify Your Email</h2>
-            <p>A verification code has been sent to your email <a href="#">@ViewData["Email"]?.ToString()</a>. Please enter it below.</p>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MavinsBarberBooking.styles.css" asp-append-version="true" />
+
+    <link href="~/css/account/VerifyEmail.css" rel="stylesheet" asp-append-version="true" />
+    @* Import FontAwesome Icon Library *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+    <div class="verify-wrapper">
+        <div class="verify-card">
+            <h2 class="verify-title">Verify Your Email</h2>
+            <p class="verify-subtitle">
+                A verification code has been sent to your email
+                <strong>@ViewData["Email"]?.ToString()</strong>. Please enter it below.
+            </p>
 
             <form method="post">
-                <div class="mb-3">
-                    <label for="verificationCode" class="form-label">Verification Code</label>
-                    <input type="text" class="form-control" id="verificationCode" asp-for="VerificationCode" required>
-                    <span asp-validation-for="VerificationCode" class="text-danger"></span>
+                <div class="mb-4">
+                    <label for="verificationCode" class="verify-label">
+                        <i class="fa-regular fa-envelope verify-label-icon"></i>
+                        Verification Code
+                    </label>
+                    <input type="text"
+                           class="form-control verify-input"
+                           id="verificationCode"
+                           asp-for="VerificationCode"
+                           required
+                           autocomplete="one-time-code">
+                    <span asp-validation-for="VerificationCode" class="text-danger small"></span>
                 </div>
 
-                <button type="submit" class="btn btn-primary">Verify</button>
-
-                <a asp-action="Register" asp-controller="Account" class="btn btn-secondary">
-                    Register Again
-                </a>
+                <div class="verify-actions">
+                    <button type="submit" class="btn btn-verify">Verify</button>
+                    <a asp-action="Register" asp-controller="Account" class="btn btn-register-again">
+                        Register Again
+                    </a>
+                </div>
             </form>
         </div>
     </div>
-</div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="~/js/account/VerifyEmail.js" asp-append-version="true"></script>
+
+</body>
+</html>

@@ -2,59 +2,95 @@
 
 @{
     ViewData["Title"] = "Register";
+    Layout = null;
 }
 
+<!DOCTYPE html>
+<html lang="en">
 <head>
-    <link href="~/css/account/Register.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MavinsBarberBooking</title>
+    <link rel="icon" type="image/x-icon" href="~/images/logos/mavins-tab-logo.png" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MavinsBarberBooking.styles.css" asp-append-version="true" />
+
+    <link href="~/css/account/Register.css" rel="stylesheet" asp-append-version="true" />
+    @* Import FontAwesome Icon Library *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
+<body>
 
-<h1>Register</h1>
+    <div class="register-background">
 
-<form asp-action="Register" asp-controller="Account" method="post">
+        <img src="~/images/logos/mavins-line.png" class="mavins-line" /> @* Its more than just a haircut image *@
 
-    <div>
-        <label asp-for="FirstName"></label>
-        <input asp-for="FirstName" />
-        <span asp-validation-for="FirstName" class="text-danger"></span>
-    </div>
+        <img src="~/images/logos/mavins-tab-logo.png" class="mavins-tab-logo" />  @* M logo image  *@ 
 
-    <div>
-        <label asp-for="LastName"></label>
-        <input asp-for="LastName" />
-        <span asp-validation-for="LastName" class="text-danger"></span>
-    </div>
+        <div class="register-card">
 
-    <div>
-        <label asp-for="Email"></label>
-        <input asp-for="Email" type="email" />
-        <span asp-validation-for="Email" class="text-danger"></span>
-    </div>
+            <div class="mb-1">
+                <h5 class="fw-bold mb-0" style="font-size: 0.8778rem;">Welcome!</h5>
+                <h2 class="fw-bold mb-1" style="font-size: 1.4784rem;">Sign up to</h2>
+                <p class="text-dark fw-semibold mb-0" style="font-size: 0.8085rem;">Mavins Barber Shop</p>
+            </div>
 
-    <div>
-        <label asp-for="Password"></label>
-        <div class="password-container">
-            <input asp-for="Password" id="password" type="password" class="form-control" minlength="8" />
-            <i class="fa-regular fa-eye toggle-password" onclick="toggleVisibility('password', this)"></i>
+            <form asp-action="Register" asp-controller="Account" method="post">
+
+                <div class="mb-1">
+                    <label asp-for="FirstName" class="form-label fw-bold mb-0" style="font-size: 0.8085rem;">First Name</label>
+                    <input asp-for="FirstName" type="text" class="form-control form-control-custom" placeholder="Enter your first name" />
+                    <span asp-validation-for="FirstName" class="text-danger" style="font-size: 0.75075rem;"></span>
+                </div>
+
+                <div class="mb-1">
+                    <label asp-for="LastName" class="form-label fw-bold mb-0" style="font-size: 0.8085rem;">Last Name</label>
+                    <input asp-for="LastName" type="text" class="form-control form-control-custom" placeholder="Enter your last name" />
+                    <span asp-validation-for="LastName" class="text-danger" style="font-size: 0.75075rem;"></span>
+                </div>
+
+                <div class="mb-1">
+                    <label asp-for="Email" class="form-label fw-bold mb-0" style="font-size: 0.8085rem;">Email</label>
+                    <input asp-for="Email" type="email" class="form-control form-control-custom" placeholder="Enter your email" />
+                    <span asp-validation-for="Email" class="text-danger" style="font-size: 0.75075rem;"></span>
+                </div>
+
+                <div class="mb-1">
+                    <label asp-for="Password" class="form-label fw-bold mb-0" style="font-size: 0.8085rem;">Password</label>
+                    <div class="position-relative">
+                        <input asp-for="Password" type="password" class="form-control form-control-custom pe-5" placeholder="Enter your password" id="passwordInput" minlength="8" />
+                        <i class="fa-solid fa-eye toggle-password text-muted" onclick="toggleVisibility('passwordInput', this)" style="position: absolute; right: 11.088px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10; font-size: 0.8778rem;"></i>
+                    </div>
+                    <span asp-validation-for="Password" class="text-danger" style="font-size: 0.75075rem;"></span>
+                </div>
+
+                <div class="mb-2">
+                    <label asp-for="ConfirmPassword" class="form-label fw-bold mb-0" style="font-size: 0.8085rem;">Confirm Password</label>
+                    <div class="position-relative">
+                        <input asp-for="ConfirmPassword" type="password" class="form-control form-control-custom pe-5" placeholder="Confirm your password" id="confirmPasswordInput" minlength="8" />
+                        <i class="fa-solid fa-eye toggle-password text-muted" onclick="toggleVisibility('confirmPasswordInput', this)" style="position: absolute; right: 11.088px; top: 50%; transform: translateY(-50%); cursor: pointer; z-index: 10; font-size: 0.8778rem;"></i>
+                    </div>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger" style="font-size: 0.75075rem;"></span>
+                </div>
+
+                <button type="submit" class="btn btn-dark w-100" style="padding: 0.462rem 0; border-radius: 6px; font-weight: 500; margin-bottom: 0.924rem; font-size: 0.924rem;">Register</button>
+
+                <div class="text-center" style="font-size: 0.8085rem;">
+                    <span class="text-muted">Already have an Account ? </span>
+                    <a href="/Account/Login" class="text-dark fw-bold text-decoration-none">Login</a>
+                </div>
+
+            </form>
         </div>
-        <span asp-validation-for="Password" class="text-danger"></span>
     </div>
 
-    <div>
-        <label asp-for="ConfirmPassword"></label>
-        <div class="password-container">
-            <input asp-for="ConfirmPassword" id="confirmPassword" type="password" class="form-control" minlength="8" />
-            <i class="fa-regular fa-eye toggle-password" onclick="toggleVisibility('confirmPassword', this)"></i>
-        </div>
-        <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-    </div>
-
-    <button type="submit">Register</button>
-    <p>Already Have an Account? <a href="/Account/Login">Login</a></p>
-        
-</form>
-
-<script src="~/js/account/Register.js"></script>
-
-@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
-}
+
+    <script src="~/js/account/Register.js" asp-append-version="true"></script>
+
+</body>
+</html>

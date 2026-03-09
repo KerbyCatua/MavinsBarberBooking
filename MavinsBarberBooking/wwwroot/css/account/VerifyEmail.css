@@ -1,2 +1,175 @@
-﻿body {
+﻿/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* ── Fix extra bottom space ── */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* ── Page shell ── */
+.verify-wrapper {
+    min-height: 100vh;
+    min-height: 100dvh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    background: linear-gradient(180deg, #fdfdfd 0%, #b8b8b8 40%, #333333 100%);
+}
+
+/* ── Card ── */
+.verify-card {
+    background: #ffffff;
+    border-radius: 6px;
+    padding: 2.5rem 2.75rem;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 2px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ── Title ── */
+.verify-title {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 700;
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    color: #111111;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.85rem;
+}
+
+/* ── Subtitle ── */
+.verify-subtitle {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: #222222;
+    line-height: 1.6;
+    margin-bottom: 1.75rem;
+}
+
+    .verify-subtitle strong {
+        font-weight: 600;
+        color: #000000;
+    }
+
+/* ── Label ── */
+.verify-label {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #111111;
+    margin-bottom: 0.45rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+/* ── Label icon ── */
+.verify-label-icon {
+    font-size: 0.9rem;
+    color: #111111;
+    flex-shrink: 0;
+}
+
+/* ── Input ── */
+.verify-input {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.95rem;
+    border: 1.5px solid #cccccc;
+    border-radius: 4px;
+    padding: 0.55rem 0.75rem;
+    color: #111111;
+    background: #ffffff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    width: 100%;
+    max-width: 220px;
+}
+
+    .verify-input:focus {
+        border-color: #111111;
+        box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.08);
+        outline: none;
+    }
+
+/* ── Action buttons row ── */
+.verify-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 1.5rem;
+}
+
+/* Verify (black) */
+.btn-verify {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: #111111;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.25rem;
+    cursor: pointer;
+    transition: background 0.18s ease, transform 0.1s ease;
+}
+
+    .btn-verify:hover {
+        background: #333333;
+        color: #ffffff;
+    }
+
+    .btn-verify:active {
+        transform: scale(0.97);
+    }
+
+/* Register Again */
+.btn-register-again {
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 600;
+    background: #111111;
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    padding: 0.5rem 1.25rem;
+    text-decoration: none;
+    transition: background 0.18s ease, transform 0.1s ease;
+    display: inline-flex;
+    align-items: center;
+}
+
+    .btn-register-again:hover {
+        background: #333333;
+        color: #ffffff;
+    }
+
+    .btn-register-again:active {
+        transform: scale(0.97);
+    }
+
+/* ── Mobile tweaks ── */
+@media (max-width: 480px) {
+    .verify-card {
+        padding: 2rem 1.5rem;
+    }
+
+    .verify-input {
+        max-width: 100%;
+    }
+
+    .verify-actions {
+        flex-direction: column;
+    }
+
+    .btn-verify,
+    .btn-register-again {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+    }
 }
