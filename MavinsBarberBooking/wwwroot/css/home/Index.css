@@ -1,0 +1,46 @@
+﻿/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body, html {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+body {
+    background: linear-gradient(180deg, #e8e8e8 0%, #a0a0a0 45%, #222222 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+}
+
+.content-wrapper {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-title {
+    color: #1a1a1a;
+    letter-spacing: -2px;
+    line-height: 0.9;
+}
+
+.hero-subtitle {
+    color: #f1f1f1;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.custom-nav-link:hover {
+    color: #555 !important;
+}
+
+.custom-dark-btn {
+    background-color: #3b3b3b;
+    border: 1px solid transparent;
+    transition: all 0.3s ease;
+}
+
+    .custom-dark-btn:hover {
+        background-color: #212121;
+    }

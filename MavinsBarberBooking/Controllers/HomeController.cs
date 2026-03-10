@@ -28,5 +28,18 @@ namespace MavinsBarberBooking.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+        [HttpGet]
+        public IActionResult About()
+        {
+            return View();
+        }
+
+
+        [HttpGet]
+        public IActionResult Team()
+        {
+            return View();
+        }
     }
 }
