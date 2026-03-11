@@ -3,9 +3,14 @@ using Dapper;
 using MavinsBarberBooking.Models.Entities;
 using MavinsBarberBooking.Models.ViewModels;
 using MavinsBarberBooking.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.ML;
 using System.Data;
+using System.Security.Claims;
 
 namespace MavinsBarberBooking.Controllers
 {
@@ -155,10 +160,11 @@ namespace MavinsBarberBooking.Controllers
         }
 
         [HttpPost]
-        public IActionResult Login(LoginViewModel model)
+        public async Task<IActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid) return View(model);
 
+            // 1. Validate username and password (Your existing logic)
             var user = _db.QueryFirstOrDefault<User>(
                 "SELECT * FROM Users WHERE Email = @Email", new { model.Email });
 
@@ -173,6 +179,46 @@ namespace MavinsBarberBooking.Controllers
 
             if (!ModelState.IsValid) return View(model);
 
+            // --- SESSION TRACKING LOGIC STARTS HERE ---
+
+            // 2. Generate a unique token for this specific login session
+            var sessionToken = Guid.NewGuid().ToString();
+
+            // 3. Get the user's IP Address and Browser info
+            var ipAddress = HttpContext.Connection.RemoteIpAddress?.ToString();
+            var userAgent = Request.Headers["User-Agent"].ToString();
+
+            // 4. Save to Database using Dapper
+            var sql = @"
+                INSERT INTO UserSession (UserId, SessionToken, IpAddress, UserAgent, LastActivity, IsActive)
+                VALUES (@UserId, @SessionToken, @IpAddress, @UserAgent, @LastActivity, @IsActive)";
+
+                    _db.Execute(sql, new
+                    {
+                        UserId = user!.Id, // Assuming your User model has an 'Id' property
+                        SessionToken = sessionToken,
+                        IpAddress = ipAddress,
+                        UserAgent = userAgent,
+                        LastActivity = DateTime.UtcNow,
+                        IsActive = true
+                    });
+
+            // 5. Add the SessionToken to the user's Claims
+            var claims = new List<Claim>
+            {
+                new Claim(ClaimTypes.Name, user.FirstName), // This populates @User.Identity.Name
+                new Claim(ClaimTypes.Email, user.Email), // or user.UserName if you have one
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim("SessionToken", sessionToken) // Custom Claim for tracking!
+            };
+
+            var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // 6. Issue the authentication cookie to the browser
+            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity));
+
+            // --- SESSION TRACKING LOGIC ENDS HERE ---
+
             return RedirectToAction("Index", "Home");
         }
 
@@ -183,6 +229,48 @@ namespace MavinsBarberBooking.Controllers
             return new string(Enumerable.Range(0, 6)
                 .Select(_ => chars[random.Next(chars.Length)])
                 .ToArray());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> RevokeSession(int sessionId)
+        {
+            // 1. Get the currently logged-in user's ID from the cookie claims
+            var userIdString = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+            if (int.TryParse(userIdString, out int userId))
+            {
+                // 2. Use Dapper to set IsActive to 0 (false) for that specific session
+                // We include UserId in the WHERE clause so a user can't maliciously delete someone else's session
+                string sql = @"
+                UPDATE UserSession 
+                SET IsActive = 0 
+                WHERE Id = @SessionId AND UserId = @UserId";
+
+                await _db.ExecuteAsync(sql, new { SessionId = sessionId, UserId = userId });
+            }
+
+            return RedirectToAction("ActiveSessions");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            // 1. Get the current SessionToken from the user's claims
+            var sessionToken = User.FindFirstValue("SessionToken");
+
+            if (!string.IsNullOrEmpty(sessionToken))
+            {
+                // 2. Mark THIS specific session as inactive in the database
+                string sql = "UPDATE UserSession SET IsActive = 0 WHERE SessionToken = @SessionToken";
+                await _db.ExecuteAsync(sql, new { SessionToken = sessionToken });
+            }
+
+            // 3. Delete the authentication cookie from the user's browser
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            // 4. Redirect them back to the home page or login page
+            return RedirectToAction("Login", "Account");
         }
 
     }

@@ -1,5 +1,6 @@
 ﻿<head>
     <link href="~/css/shared/_Navbar.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 
 <div class="bg-watermark">
@@ -15,8 +16,23 @@
         <a asp-controller="Service" asp-action="Index" class="text-dark text-decoration-none fs-6 custom-nav-link">Services</a>
         <a asp-controller="Home" asp-action="Team" class="text-dark text-decoration-none fs-6 custom-nav-link">Team</a>
         <a asp-controller="Home" asp-action="About" class="text-dark text-decoration-none fs-6 custom-nav-link">About</a>
-        @* TODO *@
-        <a asp-controller="#" asp-action="#" class="text-dark text-decoration-none fs-6 custom-nav-link">Gallery</a>  
-        <a asp-controller="Account" asp-action="Login" class="btn rounded-0 text-white px-4 py-2 fw-bold custom-dark-btn">Log In</a>
+        <a asp-controller="#" asp-action="#" class="text-dark text-decoration-none fs-6 custom-nav-link">Gallery</a>
+
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            @* If user IS logged in *@
+            <span class="text-dark fs-6 custom-nav-link">
+                <i class="fa-regular fa-user"></i>Hello @User.Identity.Name! 
+            </span>
+
+            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline m-0 p-0">
+                <button type="submit" class="btn rounded-0 text-white px-4 py-2 fw-bold custom-dark-btn">Log Out</button>
+            </form>
+        }
+        else
+        {
+            @* If user IS NOT logged in *@
+            <a asp-controller="Account" asp-action="Login" class="btn rounded-0 text-white px-4 py-2 fw-bold custom-dark-btn">Log In</a>
+        }
     </div>
 </nav>
