@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - MavinsBarberBooking</title>
 
-    <link rel="icon" type="image/x-icon" href="~/images/logos/mavins-tab-logo.png" />
+    <link rel="icon" type="image/x-icon" href="~/images/logos/mavins-tab-logo.png" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MavinsBarberBooking.styles.css" asp-append-version="true" />
@@ -30,16 +30,17 @@
                     <h1 class="display-2 fw-bolder hero-title">Barbershop</h1>
 
                     <p class="hero-subtitle mt-4 fs-5">
-                        Welcome to Mavins Barbershop <br />
-                        Our Barbers are skilled professionals specializing <br />
-                        in men’s hair care. We offer a variety of services, <br />
-                        including haircuts, Anti dandruff treatment, <br />
-                        shaves, Hair color & styling.
+                        Welcome to Mavins Barbershop. Our Barbers are skilled professionals specializing
+                        in men’s hair care. We offer a variety of services, including haircuts, Anti dandruff
+                        treatment, shaves, Hair color & styling.
                     </p>
 
                     <div class="mt-5 d-flex gap-3">
                         <button class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">BOOK NOW</button>
-                        <button class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">LOG IN</button>
+                        @if (!(User.Identity != null && User.Identity.IsAuthenticated))
+                        {
+                            <button onclick="window.location.href='/Account/Login'" class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">LOG IN</button>
+                        }
                     </div>
                 </div>
             </div>

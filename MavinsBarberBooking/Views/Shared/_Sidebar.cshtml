@@ -1,0 +1,99 @@
+﻿@using System.Security.Claims
+
+<head>
+    <link href="~/css/shared/_Sidebar.css" rel="stylesheet" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+
+<div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+<i class="fa-solid fa-bars" onclick="toggleSidebar()" style="cursor: pointer; font-size: 1.5rem;"></i>
+
+<div id="mySidebar" class="custom-sidebar">
+    <i class="fa-solid fa-xmark close-btn" onclick="toggleSidebar()"></i>
+
+    <div class="sidebar-content-wrapper">
+        @if (User.Identity != null && User.Identity.IsAuthenticated)
+        {
+            @* LOGGED IN USER VIEW *@
+            var fullName = User.FindFirst(ClaimTypes.Name)?.Value;
+            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+            <div class="user-profile-section">
+                <i class="fa-regular fa-user profile-icon"></i>
+                <div class="user-details">
+                    <span class="user-name">@fullName</span>
+                    <span class="user-email">@email</span>
+                </div>
+            </div>
+
+            <hr class="sidebar-divider" />
+
+            <div class="sidebar-nav-links">
+                <a href="#">Settings</a>
+                <a href="#">Notifications</a>
+                <a href="#">Support</a>
+                <a href="#">Help</a>
+                <a href="#">Share</a>
+            </div>
+
+            <hr class="sidebar-divider" />
+
+            <form asp-controller="Account" asp-action="Logout" method="post" class="logout-form">
+                <button type="submit" class="logout-btn">
+                    <i class="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+                </button>
+            </form>
+        }
+        else
+        {
+            @* LOGGED OUT (GUEST) VIEW *@
+            <div class="user-profile-section">
+                <i class="fa-regular fa-user profile-icon"></i>
+                <div class="user-details">
+                    <span class="user-name">Welcome, Guest</span>
+                    <span class="user-email">Sign in to book a haircut</span>
+                </div>
+            </div>
+
+            <hr class="sidebar-divider" />
+
+            <div class="sidebar-nav-links">
+                <a href="#">Services</a>
+                <a href="#">Our Barbers</a>
+                <a href="#">Gallery</a>
+                <a href="#">Share</a>
+            </div>
+
+            <hr class="sidebar-divider" />
+
+            <div class="sidebar-auth-links">
+                <a asp-controller="Account" asp-action="Login">Log In</a>
+                <a asp-controller="Account" asp-action="Register">Register</a>
+            </div>
+        }
+
+        <div class="sidebar-footer">
+            <div class="social-icons">
+                <i class="fa-brands fa-instagram"></i>
+                <i class="fa-brands fa-facebook-f"></i>
+            </div>
+            <div class="location-info">
+                <i class="fa-solid fa-location-dot"></i>
+                <p>
+                    #78 Mavins Barbershop, Gonzales Ave. San Juan, Apalit, Pampanga 2016
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleSidebar() {
+        var sidebar = document.getElementById("mySidebar");
+        var overlay = document.getElementById("sidebarOverlay");
+
+        sidebar.classList.toggle("open");
+        overlay.classList.toggle("active");
+    }
+</script>

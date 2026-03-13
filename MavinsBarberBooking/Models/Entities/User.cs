@@ -16,5 +16,7 @@ namespace MavinsBarberBooking.Models.Entities
 
         public DateTime CreatedAt { get; set; }
         public bool IsActive { get; set; }
+
+        public string Role { get; set; } = "Customer"; // Default to Customer
     }
 }

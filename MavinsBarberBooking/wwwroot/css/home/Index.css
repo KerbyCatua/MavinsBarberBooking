@@ -44,3 +44,16 @@ body {
     .custom-dark-btn:hover {
         background-color: #212121;
     }
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .hero-subtitle {
+        text-align: justify;
+        font-size: 1rem !important; /* Slightly reduces font size on mobile for better readability */
+    }
+
+    /* Optional: Makes the hero titles slightly smaller on mobile so they don't overwhelm the screen */
+    .hero-title {
+        font-size: 4rem;
+    }
+}

@@ -95,23 +95,31 @@ using (var scope = app.Services.CreateScope())
         connection.Open();
         // Example: Create the Users table if it doesn't exist
         string UsersSql = @"
+            -- 1. Create the Users table if it doesn't exist at all
             IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Users')
             BEGIN
                 CREATE TABLE Users (
                     Id INT PRIMARY KEY IDENTITY(1,1),
-
                     FirstName NVARCHAR(100) NOT NULL,
                     LastName NVARCHAR(100) NOT NULL,
-
                     Email NVARCHAR(150) NOT NULL UNIQUE,
                     PasswordHash NVARCHAR(255) NOT NULL,
-
                     PhoneNumber NVARCHAR(20) NULL,
-
                     CreatedAt DATETIME NOT NULL DEFAULT GETDATE(),
                     IsActive BIT NOT NULL DEFAULT 1
                 );
-            END";
+            END
+
+            -- 2. If the table DOES exist, safely add the Role column if it's missing!
+                IF NOT EXISTS (
+                    SELECT * FROM sys.columns 
+                    WHERE object_id = OBJECT_ID('Users') AND name = 'Role'
+                )
+                BEGIN
+                    ALTER TABLE Users
+                    ADD Role NVARCHAR(50) NOT NULL DEFAULT 'Customer';
+                END
+        ";
 
         string EmailVerificationsSql = @"
             IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'EmailVerifications')

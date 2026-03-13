@@ -1,0 +1,251 @@
+﻿/* ── Google Font ── */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+/* --- OVERLAY (The dark gradient background) --- */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(to right, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.6) 50%, transparent 100%);
+    z-index: 999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+    .sidebar-overlay.active {
+        opacity: 1;
+        visibility: visible;
+        backdrop-filter: blur(5px);
+        -webkit-backdrop-filter: blur(5px);
+    }
+
+/* --- MAIN SIDEBAR CONTAINER --- */
+.custom-sidebar {
+    font-family: 'Poppins', sans-serif;
+    height: 100vh;
+    width: 320px; /* Wider for the premium look */
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: -320px;
+    background-color: transparent; /* Lets the overlay show through! */
+    overflow-x: hidden;
+    transition: 0.5s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+    .custom-sidebar.open {
+        left: 0;
+    }
+
+/* Wrapper to structure content properly */
+.sidebar-content-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 80px 40px 40px 40px;
+    color: #ffffff;
+}
+
+/* --- CLOSE BUTTON --- */
+.custom-sidebar .close-btn {
+    position: absolute;
+    top: 25px;
+    left: 40px; /* Moved to left to match mockup */
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #ffffff;
+    transition: transform 0.2s;
+}
+
+    .custom-sidebar .close-btn:hover {
+        transform: scale(1.1);
+    }
+
+/* --- USER PROFILE SECTION --- */
+.user-profile-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.profile-icon {
+    font-size: 2.2rem;
+}
+
+.user-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.user-name {
+    font-weight: 500;
+    font-size: 1.1rem;
+    letter-spacing: 0.5px;
+}
+
+.user-email {
+    font-weight: 300;
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+/* --- DIVIDERS --- */
+.sidebar-divider {
+    border: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+    margin: 0 0 30px 0;
+    width: 80%;
+}
+
+/* --- NAVIGATION LINKS --- */
+.sidebar-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Slightly reduced gap because the padding adds size */
+    margin-bottom: 30px;
+}
+
+    .sidebar-nav-links a {
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 500;
+        font-size: 1rem;
+        width: 100%;
+        /* 1. Add padding to make the hover area larger than the text */
+        padding: 10px 20px;
+        /* 2. Pull it to the left so the text stays perfectly aligned with the rest of your sidebar */
+        margin-left: -20px;
+        /* 3. Smoothly round the corners of the hover box */
+        border-radius: 8px;
+        /* 4. Animate the background color change smoothly */
+        transition: background-color 0.2s ease;
+    }
+
+        .sidebar-nav-links a:hover {
+            /* 15% white opacity gives a gorgeous, subtle glass effect */
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+
+.sidebar-auth-links {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+    .sidebar-auth-links a {
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: 500;
+        font-size: 1rem;
+        width: 100%;
+        padding: 10px 20px;
+        margin-left: -20px;
+        border-radius: 8px;
+        transition: background-color 0.2s ease;
+    }
+
+        .sidebar-auth-links a:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+
+.logout-form {
+    margin: 0;
+    padding: 0;
+}
+
+.logout-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: inherit;
+    width: 100%;
+    padding: 10px 20px;
+    margin-left: -20px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+    .logout-btn:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+    }
+
+
+
+/* --- FOOTER (Socials & Location) --- */
+.sidebar-footer {
+    margin-top: auto; /* Pushes this to the very bottom */
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+}
+
+.social-icons {
+    display: flex;
+    gap: 20px;
+    font-size: 1.5rem;
+}
+
+    .social-icons i {
+        cursor: pointer;
+        transition: opacity 0.2s;
+    }
+
+        .social-icons i:hover {
+            opacity: 0.7;
+        }
+
+.location-info {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    font-size: 0.75rem;
+    font-weight: 300;
+    opacity: 0.6;
+    line-height: 1.4;
+}
+
+    .location-info i {
+        margin-top: 3px;
+    }
+
+    .location-info p {
+        margin: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+/* --- MOBILE RESPONSIVENESS --- */
+@media (max-width: 768px) {
+    .custom-sidebar {
+        width: 85vw; /* Takes up 85% of screen on mobile */
+        left: -85vw;
+    }
+
+    .sidebar-overlay {
+        /* Makes overlay completely dark on mobile since sidebar covers most of it */
+        background: rgba(0, 0, 0, 0.85);
+    }
+
+    .sidebar-content-wrapper {
+        padding: 60px 25px 30px 25px;
+    }
+
+    .custom-sidebar .close-btn {
+        left: 25px;
+    }
+}

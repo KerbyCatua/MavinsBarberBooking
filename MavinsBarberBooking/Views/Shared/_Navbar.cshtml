@@ -1,38 +1,44 @@
-﻿<head>
-    <link href="~/css/shared/_Navbar.css" rel="stylesheet" />
+﻿@using System.Security.Claims
+
+<head>
+    <link href="~/css/shared/_Navbar.css" rel="stylesheet" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 </head>
 
 <div class="bg-watermark">
-    <img src="~/images/logos/mavins-tab-logo.png" alt="Watermark Logo" />
+    <img src="~/images/logos/mavins-tab-logo.png" alt="Watermark Logo" asp-append-version="true" />
 </div>
 
-<nav class="navbar navbar-expand-lg px-5 py-4 d-flex justify-content-between align-items-center">
-    <a class="navbar-brand m-0 p-0" href="#">
-        <img src="~/images/logos/mavins-full-logo.png" alt="Mavins Logo" style="max-height: 45px;" />
-    </a>
+<nav class="navbar px-4 px-lg-5 py-4 d-flex justify-content-between align-items-center flex-wrap">
 
-    <div class="d-flex align-items-center gap-4 fw-bold">
-        <a asp-controller="Service" asp-action="Index" class="text-dark text-decoration-none fs-6 custom-nav-link">Services</a>
-        <a asp-controller="Home" asp-action="Team" class="text-dark text-decoration-none fs-6 custom-nav-link">Team</a>
-        <a asp-controller="Home" asp-action="About" class="text-dark text-decoration-none fs-6 custom-nav-link">About</a>
-        <a asp-controller="#" asp-action="#" class="text-dark text-decoration-none fs-6 custom-nav-link">Gallery</a>
+    <div class="d-flex align-items-center gap-3 gap-lg-4">
+        <span class="fs-4 text-dark" style="cursor: pointer;">
+            <partial name="_Sidebar" />
+        </span>
+
+        <a class="navbar-brand m-0 p-0" href="#">
+            <img src="~/images/logos/mavins-full-logo.png" alt="Mavins Logo" style="max-height: 45px;" />
+        </a>
+    </div>
+
+    <div class="nav-links-container d-flex align-items-center justify-content-center gap-3 gap-lg-4 fw-bold flex-wrap mt-3 mt-lg-0">
+        <a asp-controller="Service" asp-action="Index" class="text-dark text-decoration-none custom-nav-link">Services</a>
+        <a asp-controller="Home" asp-action="Team" class="text-dark text-decoration-none custom-nav-link">Team</a>
+        <a asp-controller="Home" asp-action="About" class="text-dark text-decoration-none custom-nav-link">About</a>
+        <a asp-controller="#" asp-action="#" class="text-dark text-decoration-none custom-nav-link">Gallery</a>
 
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {
-            @* If user IS logged in *@
-            <span class="text-dark fs-6 custom-nav-link">
-                <i class="fa-regular fa-user"></i>Hello @User.Identity.Name! 
-            </span>
+            var firstName = User.FindFirst(ClaimTypes.GivenName)?.Value;
+            var lastName = User.FindFirst(ClaimTypes.Surname)?.Value;
 
-            <form asp-controller="Account" asp-action="Logout" method="post" class="d-inline m-0 p-0">
-                <button type="submit" class="btn rounded-0 text-white px-4 py-2 fw-bold custom-dark-btn">Log Out</button>
-            </form>
-        }
-        else
-        {
-            @* If user IS NOT logged in *@
-            <a asp-controller="Account" asp-action="Login" class="btn rounded-0 text-white px-4 py-2 fw-bold custom-dark-btn">Log In</a>
+            <div class="d-flex align-items-center gap-2 text-dark custom-nav-link">
+                <i class="fa-regular fa-user profile-icon"></i>
+                <div class="d-flex flex-column" style="line-height: 1.2;">
+                    <span class="fw-bold profile-last">Hello, @lastName</span>
+                    <span class="profile-first" style="font-weight: 500;">@firstName</span>
+                </div>
+            </div>
         }
     </div>
 </nav>

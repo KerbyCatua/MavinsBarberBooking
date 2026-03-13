@@ -133,9 +133,9 @@ namespace MavinsBarberBooking.Controllers
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(HttpContext.Session.GetString("TempPassword"));
 
             string sql = @"INSERT INTO Users
-                           (FirstName, LastName, Email, PasswordHash, PhoneNumber, CreatedAt, IsActive)
+                           (FirstName, LastName, Email, PasswordHash, PhoneNumber, CreatedAt, IsActive, Role)
                            VALUES
-                           (@FirstName, @LastName, @Email, @PasswordHash, @PhoneNumber, GETDATE(), 1)";
+                           (@FirstName, @LastName, @Email, @PasswordHash, @PhoneNumber, GETDATE(), 1, 'Customer')";
 
             _db.Execute(sql, new
             {
@@ -206,9 +206,14 @@ namespace MavinsBarberBooking.Controllers
             // 5. Add the SessionToken to the user's Claims
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, user.FirstName), // This populates @User.Identity.Name
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}"),
+                new Claim(ClaimTypes.GivenName, user.FirstName), // e.g. "Ian Rafael"
+                new Claim(ClaimTypes.Surname, user.LastName),    // e.g. "Salenga"
+
                 new Claim(ClaimTypes.Email, user.Email), // or user.UserName if you have one
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Role, user.Role),
+
                 new Claim("SessionToken", sessionToken) // Custom Claim for tracking!
             };
 
@@ -270,7 +275,13 @@ namespace MavinsBarberBooking.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             // 4. Redirect them back to the home page or login page
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
 
     }

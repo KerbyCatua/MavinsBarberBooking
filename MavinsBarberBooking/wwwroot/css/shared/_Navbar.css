@@ -28,3 +28,46 @@ body {
         height: 130%;
         object-fit: contain;
     }
+
+
+
+/* --- Default Desktop Sizes --- */
+.custom-nav-link {
+    font-size: 1rem;
+}
+
+.profile-icon {
+    font-size: 2rem;
+}
+
+.profile-last {
+    font-size: 1.1rem;
+}
+
+.profile-first {
+    font-size: 1rem;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 768px) {
+    .nav-links-container {
+        width: 100%; /* Forces the links to drop to a new row below the logo */
+        gap: 15px !important; /* Shrinks the space between links */
+    }
+
+    .custom-nav-link {
+        font-size: 0.85rem; /* Smaller text to fit the screen */
+    }
+
+    .profile-icon {
+        font-size: 1.5rem; /* Slightly smaller icon */
+    }
+
+    .profile-last {
+        font-size: 0.95rem;
+    }
+
+    .profile-first {
+        font-size: 0.85rem;
+    }
+}
