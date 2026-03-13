@@ -36,6 +36,7 @@
     transition: 0.5s ease;
     display: flex;
     flex-direction: column;
+    overflow-y: auto; /* ADD THIS to enable vertical scrolling */
 }
 
     .custom-sidebar.open {
@@ -46,7 +47,7 @@
 .sidebar-content-wrapper {
     display: flex;
     flex-direction: column;
-    height: 100%;
+    min-height: 100%; /* CHANGE THIS from height: 100% */
     padding: 80px 40px 40px 40px;
     color: #ffffff;
 }
@@ -187,7 +188,8 @@
 
 /* --- FOOTER (Socials & Location) --- */
 .sidebar-footer {
-    margin-top: auto; /* Pushes this to the very bottom */
+    margin-top: auto; /* Keeps it anchored to the bottom area */
+    margin-bottom: 20px; /* <-- ADD THIS to lift it up from the bottom edge */
     display: flex;
     flex-direction: column;
     gap: 25px;
@@ -229,6 +231,8 @@
         text-overflow: ellipsis;
     }
 
+
+
 /* --- MOBILE RESPONSIVENESS --- */
 @media (max-width: 768px) {
     .custom-sidebar {
@@ -247,5 +251,10 @@
 
     .custom-sidebar .close-btn {
         left: 25px;
+    }
+
+    /* ADD THIS: Lifts the footer higher specifically on mobile phones */
+    .sidebar-footer {
+        margin-bottom: 60px;
     }
 }
