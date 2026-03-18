@@ -26,16 +26,16 @@
         <div class="container-fluid px-5 py-5 mt-5">
             <div class="row">
                 <div class="col-md-7">
-                    <h1 class="display-2 fw-bolder hero-title mb-0">Mavins</h1>
-                    <h1 class="display-2 fw-bolder hero-title">Barbershop</h1>
+                    <h1 class="display-2 fw-bolder hero-title mb-0 reveal-element">Mavins</h1>
+                    <h1 class="display-2 fw-bolder hero-title reveal-element">Barbershop</h1>
 
-                    <p class="hero-subtitle mt-4 fs-5">
+                    <p class="hero-subtitle mt-4 fs-5 reveal-element">
                         Welcome to Mavins Barbershop. Our Barbers are skilled professionals specializing
                         in men’s hair care. We offer a variety of services, including haircuts, Anti dandruff
                         treatment, shaves, Hair color & styling.
                     </p>
 
-                    <div class="mt-5 d-flex gap-3">
+                    <div class="mt-5 d-flex gap-3 reveal-element">
                         <button class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">BOOK NOW</button>
                         @if (!(User.Identity != null && User.Identity.IsAuthenticated))
                         {
@@ -45,6 +45,81 @@
                 </div>
             </div>
         </div>
+
+        <section id="gallery-section" class="container-fluid px-5 py-5 mt-5">
+
+            <div class="mb-5 reveal-element">
+                <p class="fw-bold text-uppercase mb-2 text-white" style="letter-spacing: 1px; font-size: 0.9rem;">
+                    Our Masterpieces
+                </p>
+                <h2 class="display-4 fw-bolder text-dark lh-1 mb-0" style="letter-spacing: -2px;">
+                    Everything you need to
+                </h2>
+                <h2 class="display-4 fw-bolder text-dark lh-1" style="letter-spacing: -2px;">
+                    find your next style
+                </h2>
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-12 col-lg-7 reveal-element">
+                    <div class="bento-box shadow-sm">
+                        <div id="galleryCarousel" class="carousel slide carousel-fade h-100" data-bs-ride="carousel">
+                            <div class="carousel-inner h-100">
+                                <div class="carousel-item active h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-mavins-logo.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 1" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-2.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 2" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-3.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 3" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-4.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 4" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-5.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 5" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-6.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 6" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-7.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 7" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-8.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 8" />
+                                </div>
+                                <div class="carousel-item h-100" data-bs-interval="1750">
+                                    <img src="~/images/gallery/gallery-image-9.png" class="w-100 h-100 object-fit-cover" alt="Mavins Style 9" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-5 reveal-element">
+                    <div class="bento-box shadow-sm">
+                        <img src="~/images/gallery/gallery-image-3.png" class="w-100 h-100 object-fit-cover" alt="Static Style 1" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-4 reveal-element">
+                    <div class="bento-box shadow-sm">
+                        <img src="~/images/gallery/gallery-image-6.png" class="w-100 h-100 object-fit-cover" alt="Static Style 2" />
+                    </div>
+                </div>
+
+                <div class="col-12 col-lg-8 reveal-element">
+                    <div class="bento-box shadow-sm">
+                        <img src="~/images/gallery/gallery-image-8.png" class="w-100 h-100 object-fit-cover" alt="Static Style 3" />
+                    </div>
+                </div>
+
+            </div>
+
+        </section>
+
     </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -52,5 +127,6 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script src="~/js/home/Index.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 </body>
 </html>

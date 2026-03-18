@@ -155,11 +155,80 @@ using (var scope = app.Services.CreateScope())
             END
         ";
 
+        string BarberSchemaSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Barbers')
+            BEGIN
+                CREATE TABLE Barbers (
+                    BarberId INT PRIMARY KEY IDENTITY(1,1),
+                    UserId NVARCHAR(450) NULL, /* Standard size if using ASP.NET Core Identity */
+                    Name NVARCHAR(100) NOT NULL,
+                    Rank NVARCHAR(50) NOT NULL, /* e.g., Head, Senior, Junior */
+                    ProfileImage NVARCHAR(MAX) NULL,
+                    AvailabilityStatus NVARCHAR(50) NOT NULL DEFAULT 'Available',
+                    Rating DECIMAL(3, 2) NOT NULL DEFAULT 5.00
+                );
+            END
+
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Specialties')
+            BEGIN
+                CREATE TABLE Specialties (
+                    SpecialtyId INT PRIMARY KEY IDENTITY(1,1),
+                    Name NVARCHAR(100) NOT NULL UNIQUE
+                );
+            END
+
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'BarberSpecialties')
+            BEGIN
+                CREATE TABLE BarberSpecialties (
+                    BarberId INT NOT NULL,
+                    SpecialtyId INT NOT NULL,
+                    PRIMARY KEY (BarberId, SpecialtyId),
+                    FOREIGN KEY (BarberId) REFERENCES Barbers(BarberId) ON DELETE CASCADE,
+                    FOREIGN KEY (SpecialtyId) REFERENCES Specialties(SpecialtyId) ON DELETE CASCADE
+                );
+            END
+        ";
+
+        string ServiceSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Services')
+            BEGIN
+                CREATE TABLE Services (
+                    ServiceId INT PRIMARY KEY IDENTITY(1,1),
+                    Name NVARCHAR(100) NOT NULL,
+                    DurationMinutes INT NOT NULL,
+                    Price DECIMAL(10, 2) NOT NULL,
+                    Details NVARCHAR(MAX) NULL
+                )
+            END
+        ";
+
+        string BarberServicesSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'BarberServices')
+            BEGIN
+                CREATE TABLE BarberServices (
+                    BarberId INT NOT NULL,
+                    ServiceId INT NOT NULL,
+                    PRIMARY KEY (BarberId, ServiceId),
+                    FOREIGN KEY (BarberId) REFERENCES Barbers(BarberId) ON DELETE CASCADE,
+                    FOREIGN KEY (ServiceId) REFERENCES Services(ServiceId) ON DELETE CASCADE
+                );
+            END
+        ";
+
         // You can add more CREATE TABLE scripts here for your Barbershop system
 
 
         // Execute them one by one
         using var command = connection.CreateCommand();
+
+        command.CommandText = BarberServicesSql;
+        command.ExecuteNonQuery(); // Executes BarberServicesSql creation
+
+        command.CommandText = ServiceSql;
+        command.ExecuteNonQuery(); // Executes ServiceSql creation
+
+        command.CommandText = BarberSchemaSql;
+        command.ExecuteNonQuery(); // Executes BarberSchemaSql creation
 
         command.CommandText = UsersSql;
         command.ExecuteNonQuery(); // Executes Users creation

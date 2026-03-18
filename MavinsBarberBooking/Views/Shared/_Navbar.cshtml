@@ -22,10 +22,17 @@
     </div>
 
     <div class="nav-links-container d-flex align-items-center justify-content-center gap-3 gap-lg-4 fw-bold flex-wrap mt-3 mt-lg-0">
+        <a asp-controller="Home" asp-action="Index" class="text-dark text-decoration-none custom-nav-link">Home</a>
+        <a asp-controller="Barber" asp-action="Index" class="text-dark text-decoration-none custom-nav-link">Team</a>
         <a asp-controller="Service" asp-action="Index" class="text-dark text-decoration-none custom-nav-link">Services</a>
-        <a asp-controller="Home" asp-action="Team" class="text-dark text-decoration-none custom-nav-link">Team</a>
-        <a asp-controller="Home" asp-action="About" class="text-dark text-decoration-none custom-nav-link">About</a>
-        <a asp-controller="#" asp-action="#" class="text-dark text-decoration-none custom-nav-link">Gallery</a>
+        @* <a asp-controller="Home" asp-action="About" class="text-dark text-decoration-none custom-nav-link">About</a> *@
+        @* <a asp-controller="#" asp-action="#" class="text-dark text-decoration-none custom-nav-link">Gallery</a> *@
+
+        @* TODO *@
+        @* @if (User.IsInRole("Admin"))
+        {
+            <p>Hello Admin, @User.FindFirst(ClaimTypes.Name)?.Value</p>   
+        } *@
 
         @if (User.Identity != null && User.Identity.IsAuthenticated)
         {

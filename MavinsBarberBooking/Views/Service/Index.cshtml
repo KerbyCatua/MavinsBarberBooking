@@ -1,1 +1,143 @@
-﻿
+﻿@model List<MavinsBarberBooking.Models.ViewModels.ServiceViewModel>
+
+@{
+    ViewData["Title"] = "Services";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MavinsBarberBooking</title>
+    <link rel="icon" type="image/x-icon" href="~/images/logos/mavins-tab-logo.png" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MavinsBarberBooking.styles.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+    <partial name="_Navbar" />
+
+    <div class="container-fluid px-4 px-lg-5 pt-2 pb-5">
+
+        <div class="mx-auto" style="max-width: 900px;">
+            <h1 class="display-3 fw-bolder text-dark mb-4" style="letter-spacing: -2px;">Services</h1>
+
+            <div class="glass-panel p-4 p-md-5">
+
+                <div class="d-flex align-items-center mb-4">
+                    @if (!ViewBag.IsAllServices)
+                    {
+                        <button class="back-btn me-3" onclick="history.back()">
+                            <i class="fa-solid fa-chevron-left"></i>
+                        </button>
+                    }
+                    <h2 class="m-0 fw-bold">@ViewBag.HeaderName</h2>
+                </div>
+
+                <div class="services-list d-flex flex-column gap-3">
+                    @if (Model == null || !Model.Any())
+                    {
+                        <div class="text-center text-white py-5 reveal-element">
+                            <i class="fa-solid fa-scissors mb-3 opacity-50" style="font-size: 2.5rem;"></i>
+                            <h4 class="fw-bold">No services available</h4>
+                            <p class="opacity-75">
+                                @(ViewBag.IsAllServices ? "We currently have no services listed." : $"{ViewBag.HeaderName} currently has no services listed.")
+                            </p>
+                        </div>
+                    }
+                    else
+                    {
+                        @foreach (var service in Model)
+                        {
+                            <div class="service-card text-white p-4 reveal-element">
+
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h4 class="fw-bold mb-1 fs-5">@service.Name by @service.BarberName</h4>
+
+                                        <div class="service-meta small opacity-75">
+                                            <span>@service.DurationDisplay</span> &bull;
+
+                                            <span role="button" class="text-decoration-underline text-white fw-medium details-toggle" data-bs-toggle="collapse" data-bs-target="#details-@service.ServiceId" aria-expanded="false">
+                                                Details
+                                            </span>
+
+                                            &bull; <span>&#8369;@service.Price.ToString("0")</span>
+                                        </div>
+                                    </div>
+
+                                    <a href="#" class="text-white">
+                                        <i class="fa-solid fa-chevron-right fs-5"></i>
+                                    </a>
+                                </div>
+
+                                <div class="collapse mt-3" id="details-@service.ServiceId">
+                                    <div class="p-3 rounded" style="background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);">
+                                        <p class="mb-0 small opacity-75">
+                                            @service.Details
+                                        </p>
+                                    </div>
+                                </div>
+
+                            </div>
+                        }
+                    }
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+        }
+
+        .back-btn {
+            background: rgba(80, 80, 80, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+            .back-btn:hover {
+                background: rgba(90, 90, 90, 0.6);
+            }
+
+        .service-card {
+            background: rgba(80, 80, 80, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 15px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease, background 0.2s ease;
+        }
+
+            .service-card:hover {
+                background: rgba(100, 100, 100, 0.5);
+                transform: scale(1.01);
+            }
+    </style>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/site.js" asp-append-version="true"></script>
+</body>
+</html>

@@ -1,0 +1,108 @@
+﻿@model List<MavinsBarberBooking.Models.ViewModels.BarberViewModel>
+
+@{
+    ViewData["Title"] = "Our Team";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - MavinsBarberBooking</title>
+    <link rel="icon" type="image/x-icon" href="~/images/logos/mavins-tab-logo.png" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/MavinsBarberBooking.styles.css" asp-append-version="true" />
+
+    <link href="~/css/barber/Index.css" rel="stylesheet" asp-append-version="true" />
+    @* Import FontAwesome Icon Library *@
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+</head>
+<body>
+
+    <partial name="_Navbar" />
+
+    <div class="container-fluid px-4 px-lg-5 pt-2 pb-5">
+        <h1 class="display-3 fw-bolder text-dark mb-4" style="letter-spacing: -2px;">Our Team</h1>
+
+        <div class="glass-panel p-4 p-md-5">
+            @if (!Model.Any())
+            {
+                <div class="text-center text-white py-5 reveal-element">
+                    <h3 class="fw-bold">No barbers are currently available</h3>
+                    <p class="opacity-75">Please check back later.</p>
+                </div>
+            }
+            else
+            {
+                <div class="row g-4 justify-content-center">
+                    @foreach (var barber in Model)
+                    {
+                        <div class="col-12 col-md-6 col-xl-4 reveal-element">
+                            <div class="barber-card text-white h-100 d-flex flex-column p-4">
+
+                                <div class="d-flex align-items-center gap-3 mb-4">
+                                    <div class="profile-image-placeholder flex-shrink-0">
+                                        @if (string.IsNullOrEmpty(barber.ProfileImage) || barber.ProfileImage == "[IMAGE_URL_PLACEHOLDER]")
+                                        {
+                                            <i class="fa-solid fa-user"></i>
+                                        }
+                                        else
+                                        {
+                                            <img src="@barber.ProfileImage" alt="@barber.Name" class="w-100 h-100 object-fit-cover" />
+                                        }
+                                    </div>
+                                    <div>
+                                        <h3 class="m-0 fs-5 fw-bold">Barber @barber.Name</h3>
+                                        <span class="small opacity-75">@barber.Rank Barber</span>
+                                    </div>
+                                </div>
+
+                                <div class="flex-grow-1">
+                                    <h4 class="fs-5 fw-medium m-0">Specialties</h4>
+                                    <hr class="custom-hr my-3" />
+                                    <ul class="list-unstyled m-0 mb-4">
+                                        @foreach (var specialty in barber.Specialties)
+                                        {
+                                            <li class="mb-2 fw-medium">• @specialty</li>
+                                        }
+                                    </ul>
+                                    <hr class="custom-hr my-3" />
+                                </div>
+
+                                <div class="mt-auto">
+                                    <div class="mb-4">
+                                        <span class="d-block fw-bold mb-1">@barber.Rating Rating</span>
+                                        <div class="text-warning small">
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                            <i class="fa-solid fa-star"></i>
+                                        </div>
+                                    </div>
+                                    <a asp-controller="Service" asp-action="Index" asp-route-barberId="@barber.BarberId" asp-route-barberName="@barber.Name" class="btn book-btn w-100 py-2 fw-bold text-white text-decoration-none text-center d-block">Book Appointment</a>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+
+
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="#" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+
+</body>
+</html>

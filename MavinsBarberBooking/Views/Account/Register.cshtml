@@ -31,13 +31,13 @@
 
         <div class="register-card">
 
-            <div class="mb-1">
+            <div class="mb-1 reveal-element">
                 <h5 class="fw-bold mb-0" style="font-size: 0.8778rem;">Welcome!</h5>
                 <h2 class="fw-bold mb-1" style="font-size: 1.4784rem;">Sign up to</h2>
                 <p class="text-dark fw-semibold mb-0" style="font-size: 0.8085rem;">Mavins Barber Shop</p>
             </div>
 
-            <form asp-action="Register" asp-controller="Account" method="post">
+            <form asp-action="Register" asp-controller="Account" method="post" class="reveal-element">
 
                 <div class="mb-1">
                     <label asp-for="FirstName" class="form-label fw-bold mb-0" style="font-size: 0.8085rem;">First Name</label>
@@ -91,6 +91,7 @@
     <partial name="_ValidationScriptsPartial" />
 
     <script src="~/js/account/Register.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 
 </body>
 </html>

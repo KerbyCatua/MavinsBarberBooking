@@ -20,6 +20,37 @@ html {
   min-height: 100%;
 }
 
+/*body {
+    background: linear-gradient(180deg, #e8e8e8 0%, #a0a0a0 45%, #222222 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    position: relative;*/
+    /* Add these two lines */
+    /*background-repeat: no-repeat;
+    background-attachment: fixed;
+}*/
+
 body {
-    margin-bottom: 60px;
+    overflow-x: hidden !important;
+    background: linear-gradient(180deg, #e8e8e8 0%, #a0a0a0 45%, #222222 100%);
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    font-family: 'Poppins', sans-serif;
 }
+
+
+
+/* reveal animation  */
+.reveal-element {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.8s ease-out;
+}
+
+    .reveal-element.active {
+        opacity: 1;
+        transform: translateY(0);
+    }
