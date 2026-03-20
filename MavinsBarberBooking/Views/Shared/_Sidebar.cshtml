@@ -18,10 +18,16 @@
             @* LOGGED IN USER VIEW *@
             var fullName = User.FindFirst(ClaimTypes.Name)?.Value;
             var email = User.FindFirst(ClaimTypes.Email)?.Value;
+            var role = User.FindFirst(ClaimTypes.Role)?.Value;
+            role = role == "Customer" ? "" : role;
 
             <div class="user-profile-section">
                 <i class="fa-regular fa-user profile-icon"></i>
                 <div class="user-details">
+                    @if (!string.IsNullOrEmpty(role))
+                    {
+                        <span class="user-role">@role</span>
+                    }
                     <span class="user-name">@fullName</span>
                     <span class="user-email">@email</span>
                 </div>
