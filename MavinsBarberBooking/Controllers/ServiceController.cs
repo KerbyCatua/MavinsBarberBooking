@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using MavinsBarberBooking.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.ML;
 using System.Data;
 
 namespace MavinsBarberBooking.Controllers
@@ -21,7 +23,7 @@ namespace MavinsBarberBooking.Controllers
 
             string sql = @"
             SELECT 
-                s.ServiceId, s.Name, s.DurationMinutes, s.Price, s.Details,
+                s.ServiceId, s.Name, s.DurationMinutes, s.Price, s.Details, s.ServiceImage,
                 b.Name AS BarberName
             FROM Services s
             INNER JOIN BarberServices bs ON s.ServiceId = bs.ServiceId
@@ -39,5 +41,28 @@ namespace MavinsBarberBooking.Controllers
                 return View(allServices);
             }
         }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> UpdateServiceImage(int serviceId, IFormFile imageFile)
+        {
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var fileName = $"service_{serviceId}_{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/services", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                string sql = "UPDATE Services SET ServiceImage = @ServiceImage WHERE ServiceId = @ServiceId";
+                await _db.ExecuteAsync(sql, new { ServiceImage = $"/images/services/{fileName}", ServiceId = serviceId });
+            }
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

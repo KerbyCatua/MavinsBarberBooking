@@ -1,7 +1,11 @@
 ﻿using Dapper;
 using MavinsBarberBooking.Models;
 using MavinsBarberBooking.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
+using Microsoft.ML;
 using System.Data;
 
 namespace MavinsBarberBooking.Controllers
@@ -46,5 +50,28 @@ namespace MavinsBarberBooking.Controllers
 
             return View(barberDictionary.Values.ToList());
         }
+
+
+        [HttpPost]
+        [Authorize(Roles = "Barber,Admin")]
+        public async Task<IActionResult> UpdateProfileImage(int barberId, IFormFile imageFile)
+        {
+            if (imageFile != null && imageFile.Length > 0)
+            {
+                var fileName = $"barber_{barberId}_{Guid.NewGuid()}{Path.GetExtension(imageFile.FileName)}";
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/barbers", fileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await imageFile.CopyToAsync(stream);
+                }
+
+                string sql = "UPDATE Barbers SET ProfileImage = @ProfileImage WHERE BarberId = @BarberId";
+                await _db.ExecuteAsync(sql, new { ProfileImage = $"/images/barbers/{fileName}", BarberId = barberId });
+            }
+            return RedirectToAction("Index");
+        }
+
+
     }
 }

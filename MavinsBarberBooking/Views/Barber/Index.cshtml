@@ -45,14 +45,29 @@
                             <div class="barber-card text-white h-100 d-flex flex-column p-4">
 
                                 <div class="d-flex align-items-center gap-3 mb-4">
-                                    <div class="profile-image-placeholder flex-shrink-0">
+                                    <div class="profile-image-placeholder flex-shrink-0 position-relative">
                                         @if (string.IsNullOrEmpty(barber.ProfileImage) || barber.ProfileImage == "[IMAGE_URL_PLACEHOLDER]")
                                         {
-                                            <i class="fa-solid fa-user"></i>
+                                            <div class="bg-secondary rounded-circle d-flex align-items-center justify-content-center w-100 h-100">
+                                                <i class="fa-solid fa-user text-white opacity-50" style="font-size: 2rem;"></i>
+                                            </div>
                                         }
                                         else
                                         {
-                                            <img src="@barber.ProfileImage" alt="@barber.Name" class="w-100 h-100 object-fit-cover" />
+                                            <img src="@barber.ProfileImage" alt="@barber.Name" class="w-100 h-100 object-fit-cover rounded-circle" />
+                                        }
+
+                                        @if (User.IsInRole("Barber") || User.IsInRole("Admin"))
+                                        {
+                                            <form asp-controller="Barber" asp-action="UpdateProfileImage" method="post" enctype="multipart/form-data">
+                                                <input type="hidden" name="barberId" value="@barber.BarberId" />
+
+                                                <input type="file" name="imageFile" id="file-@barber.BarberId" class="d-none" accept="image/*" onchange="this.form.submit()" />
+
+                                                <label for="file-@barber.BarberId" class="position-absolute bottom-0 start-0 bg-light text-dark rounded-circle shadow-sm m-1 d-flex align-items-center justify-content-center" style="width: 28px; height: 28px; cursor: pointer; z-index: 10;">
+                                                    <i class="fa-solid fa-pencil" style="font-size: 0.8rem;"></i>
+                                                </label>
+                                            </form>
                                         }
                                     </div>
                                     <div>
@@ -94,8 +109,6 @@
             }
         </div>
     </div>
-
-
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

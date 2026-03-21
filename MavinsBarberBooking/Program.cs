@@ -197,8 +197,16 @@ using (var scope = app.Services.CreateScope())
                     Name NVARCHAR(100) NOT NULL,
                     DurationMinutes INT NOT NULL,
                     Price DECIMAL(10, 2) NOT NULL,
-                    Details NVARCHAR(MAX) NULL
+                    Details NVARCHAR(MAX) NULL,
+                    ServiceImage NVARCHAR(MAX) NULL
                 )
+            END
+            ELSE
+            BEGIN
+                IF NOT EXISTS (SELECT * FROM sys.columns WHERE object_id = OBJECT_ID('Services') AND name = 'ServiceImage')
+                BEGIN
+                    ALTER TABLE Services ADD ServiceImage NVARCHAR(MAX) NULL
+                END
             END
         ";
 

@@ -20,5 +20,7 @@
                 return mins > 0 ? $"{hours}hr {mins}mins" : $"{hours}hr";
             }
         }
+
+        public string? ServiceImage { get; set; }
     }
 }
