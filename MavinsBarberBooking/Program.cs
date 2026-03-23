@@ -225,27 +225,28 @@ using (var scope = app.Services.CreateScope())
 
         // You can add more CREATE TABLE scripts here for your Barbershop system
 
-
-        // Execute them one by one
+        // Execute them in the CORRECT order (Parents first, then Children)
         using var command = connection.CreateCommand();
 
-        command.CommandText = BarberServicesSql;
-        command.ExecuteNonQuery(); // Executes BarberServicesSql creation
+        // 1. Independent Tables (No Foreign Keys)
+        command.CommandText = UsersSql;
+        command.ExecuteNonQuery();
 
         command.CommandText = ServiceSql;
-        command.ExecuteNonQuery(); // Executes ServiceSql creation
+        command.ExecuteNonQuery();
 
-        command.CommandText = BarberSchemaSql;
-        command.ExecuteNonQuery(); // Executes BarberSchemaSql creation
-
-        command.CommandText = UsersSql;
-        command.ExecuteNonQuery(); // Executes Users creation
+        command.CommandText = BarberSchemaSql; // This creates Barbers & Specialties
+        command.ExecuteNonQuery();
 
         command.CommandText = EmailVerificationsSql;
-        command.ExecuteNonQuery(); // Executes EmailVerifications creation
+        command.ExecuteNonQuery();
 
-        command.CommandText = UserSessionSql;
-        command.ExecuteNonQuery(); // Executes UserSession creation
+        // 2. Dependent Tables (Have Foreign Keys)
+        command.CommandText = UserSessionSql; // Needs Users
+        command.ExecuteNonQuery();
+
+        command.CommandText = BarberServicesSql; // Needs Barbers and Services
+        command.ExecuteNonQuery();
     }
     catch (Exception ex)
     {
