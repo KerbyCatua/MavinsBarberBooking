@@ -56,16 +56,22 @@ body {
     left: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.2); /* Dark background */
-    /* 5px Blur Effect */
+    background-color: rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
-    z-index: 99999; /* Keeps it above navbars and everything else */
-    /* Centering magic */
+    z-index: 99999;
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
+
+    .global-loader.show-loader {
+        opacity: 1;
+        visibility: visible;
+    }
 
     /* Helper class for the JavaScript */
     .global-loader.d-none {

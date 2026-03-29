@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 // Global Loader Logic
 document.addEventListener("DOMContentLoaded", function () {
     const loader = document.getElementById('global-loader');
+    let loaderTimer;
 
     // If the loader isn't on this page, do nothing
     if (!loader) return;
@@ -69,12 +70,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     // --- Helper Functions ---
+
     function showLoader() {
+        // Clear any existing timer just in case
+        clearTimeout(loaderTimer);
+
+        // Ensure the element is flex/visible in the layout first
         loader.classList.remove('d-none');
+
+        // Only add the 'show-loader' (opacity 1) class after 100ms to prevent flickering on fast loads
+        loaderTimer = setTimeout(() => {
+            loader.classList.add('show-loader');
+        }, 100);
     }
 
     function hideLoader() {
-        loader.classList.add('d-none');
+        // Stop the timer so the loader never shows if the load was fast
+        clearTimeout(loaderTimer);
+
+        // Remove the visibility class
+        loader.classList.remove('show-loader');
+
+        // Wait for the CSS transition (0.3s) before setting display: none 
+        setTimeout(() => {
+            loader.classList.add('d-none');
+        }, 300);
     }
 });
 // End of Global Loader Logic
