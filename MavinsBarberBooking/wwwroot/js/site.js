@@ -21,18 +21,38 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
     const loader = document.getElementById('global-loader');
     let loaderTimer;
+    const MIN_DISPLAY_TIME = 1000; // 1 second minimum
 
-    // If the loader isn't on this page, do nothing
     if (!loader) return;
 
-    // 1. Hide loader immediately when the page finishes loading
-    window.addEventListener('load', function () {
+    // 1. Check if we should still be showing a loader from the previous page
+    const storedStartTime = sessionStorage.getItem('loaderStartTime');
+    if (storedStartTime) {
+        const elapsedTime = Date.now() - parseInt(storedStartTime);
+
+        if (elapsedTime < MIN_DISPLAY_TIME) {
+            // Keep it visible and show it immediately (no 100ms delay here)
+            loader.classList.remove('d-none');
+            loader.classList.add('show-loader');
+
+            // Wait for the remainder of the 1s
+            setTimeout(() => {
+                hideLoader();
+            }, MIN_DISPLAY_TIME - elapsedTime);
+        } else {
+            // Time already passed, clean up
+            sessionStorage.removeItem('loaderStartTime');
+            hideLoader();
+        }
+    } else {
+        // Normal page load finish (no navigation-triggered loader)
         hideLoader();
-    });
+    }
 
     // 2. Hide loader if user clicks the browser's "Back" button
     window.addEventListener('pageshow', function (event) {
         if (event.persisted) {
+            sessionStorage.removeItem('loaderStartTime');
             hideLoader();
         }
     });
@@ -43,28 +63,22 @@ document.addEventListener("DOMContentLoaded", function () {
             const href = this.getAttribute('href');
             const target = this.getAttribute('target');
 
-            // Only trigger for real page links (ignore # anchors or new tabs)
             if (href && !href.startsWith('#') && !href.startsWith('javascript') && target !== '_blank' && !e.ctrlKey && !e.metaKey) {
                 showLoader();
             }
         });
     });
 
-    // 4. Show loader when submitting any form (Validation-Aware!)
+    // 4. Show loader when submitting any form
     $('form').on('submit', function () {
         let isValid = true;
-
-        // Check if ASP.NET jQuery validation is attached to this specific form
         if ($(this).data('validator')) {
-            // Run the validation check
             isValid = $(this).valid();
         }
 
-        // Only show the loading screen if there are NO errors
         if (isValid) {
             showLoader();
         } else {
-            // If the form has errors, forcefully keep the loader hidden
             hideLoader();
         }
     });
@@ -72,29 +86,32 @@ document.addEventListener("DOMContentLoaded", function () {
     // --- Helper Functions ---
 
     function showLoader() {
-        // Clear any existing timer just in case
         clearTimeout(loaderTimer);
-
-        // Ensure the element is flex/visible in the layout first
         loader.classList.remove('d-none');
 
-        // Only add the 'show-loader' (opacity 1) class after 100ms to prevent flickering on fast loads
         loaderTimer = setTimeout(() => {
             loader.classList.add('show-loader');
-        }, 100);
+            // Store the start time so the next page knows when it began
+            sessionStorage.setItem('loaderStartTime', Date.now().toString());
+        }, 300);
     }
 
     function hideLoader() {
-        // Stop the timer so the loader never shows if the load was fast
         clearTimeout(loaderTimer);
 
-        // Remove the visibility class
-        loader.classList.remove('show-loader');
+        // Only hide if the loader is currently "active"
+        if (!loader.classList.contains('show-loader')) {
+            loader.classList.add('d-none');
+            return;
+        }
 
-        // Wait for the CSS transition (0.3s) before setting display: none 
+        // We only remove the item when we are actually starting the hide transition
+        sessionStorage.removeItem('loaderStartTime');
+
+        loader.classList.remove('show-loader');
         setTimeout(() => {
             loader.classList.add('d-none');
-        }, 300);
+        }, 300); // Wait for CSS transition
     }
 });
 // End of Global Loader Logic
