@@ -20,17 +20,6 @@ html {
   min-height: 100%;
 }
 
-/*body {
-    background: linear-gradient(180deg, #e8e8e8 0%, #a0a0a0 45%, #222222 100%);
-    min-height: 100vh;
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    position: relative;*/
-    /* Add these two lines */
-    /*background-repeat: no-repeat;
-    background-attachment: fixed;
-}*/
-
 body {
     overflow-x: hidden !important;
     background: linear-gradient(180deg, #e8e8e8 0%, #a0a0a0 45%, #222222 100%);
@@ -54,3 +43,46 @@ body {
         opacity: 1;
         transform: translateY(0);
     }
+
+
+
+
+
+
+/* --- GLOBAL LOADER STYLES --- */
+.global-loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.2); /* Dark background */
+    /* 5px Blur Effect */
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    z-index: 99999; /* Keeps it above navbars and everything else */
+    /* Centering magic */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+    /* Helper class for the JavaScript */
+    .global-loader.d-none {
+        display: none !important;
+    }
+
+.spinner-container {
+    text-align: center;
+}
+
+.loading-icon {
+    font-size: 3.5rem;
+    color: #ffffff;
+}
+
+.loading-text {
+    letter-spacing: 4px;
+    font-size: 0.85rem;
+}
+/* --- END GLOBAL LOADER STYLES --- */
