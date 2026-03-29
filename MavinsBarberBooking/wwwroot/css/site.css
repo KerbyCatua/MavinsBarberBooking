@@ -76,9 +76,24 @@ body {
     text-align: center;
 }
 
+/* Add the custom keyframe animation for spinning */
+@keyframes custom-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 .loading-icon {
     font-size: 3.5rem;
     color: #ffffff;
+    /* Force it to be inline-block so transform works */
+    display: inline-block;
+    /* Apply the custom animation indefinitely */
+    animation: custom-spin 1s linear infinite !important;
 }
 
 .loading-text {
