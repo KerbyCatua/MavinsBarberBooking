@@ -164,20 +164,17 @@ namespace MavinsBarberBooking.Controllers
         {
             if (!ModelState.IsValid) return View(model);
 
-            // 1. Validate username and password (Your existing logic)
+            // 1. Fetch user by email
             var user = _db.QueryFirstOrDefault<User>(
                 "SELECT * FROM Users WHERE Email = @Email", new { model.Email });
 
-            if (user == null)
+            // 2. Validate user exists AND password is correct in one generic check
+            if (user == null || !BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
             {
-                ModelState.AddModelError("Email", "Email not found. Please proceed to register.");
+                // Using Password attaches the error to the general validation summary, not a specific input field
+                ModelState.AddModelError("Password", "Invalid email or password.");
+                return View(model);
             }
-            else if (!BCrypt.Net.BCrypt.Verify(model.Password, user.PasswordHash))
-            {
-                ModelState.AddModelError("Password", "Invalid password.");
-            }
-
-            if (!ModelState.IsValid) return View(model);
 
             // --- SESSION TRACKING LOGIC STARTS HERE ---
 
