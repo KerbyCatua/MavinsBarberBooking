@@ -6,18 +6,18 @@ html {
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
+    position: relative;
+    min-height: 100%;
 }
 
 body {
@@ -48,80 +48,62 @@ body {
 
 
 
-/* START LOADER DESIGN */
-.loader-overlay {
+
+/* --- GLOBAL LOADER STYLES --- */
+.global-loader {
     position: fixed;
     top: 0;
     left: 0;
-    right: 0;
-    bottom: 0;
     width: 100vw;
     height: 100vh;
-    background-color: rgba(0, 0, 0, 0.6);
-    display: flex; /* Keep as flex to allow opacity transition */
-    justify-content: center;
-    align-items: center;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     z-index: 99999;
-    /* Fade logic */
-    opacity: 0;
-    transition: opacity 0.4s ease-in-out; /* Increased to 0.4s for smoother feel */
-    pointer-events: none;
-    backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px);
-}
-
-    /* State triggered by JavaScript */
-    .loader-overlay.show-loader {
-        opacity: 1;
-        pointer-events: all;
-    }
-
-/* Prevent background scrolling */
-body.loader-active {
-    overflow: hidden !important;
-    touch-action: none;
-}
-
-/* Hidden state for when transition is finished */
-.d-none {
-    display: none !important;
-}
-
-.loader {
     display: flex;
-    gap: 15px;
-    color: #FFFFF0;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-.inline-block {
+    .global-loader.show-loader {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    /* Helper class for the JavaScript */
+    .global-loader.d-none {
+        display: none !important;
+    }
+
+.spinner-container {
+    text-align: center;
+}
+
+/* Add the custom keyframe animation for spinning */
+@keyframes custom-spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-icon {
+    font-size: 3.5rem;
+    color: #ffffff;
+    /* Force it to be inline-block so transform works */
     display: inline-block;
+    /* Apply the custom animation indefinitely */
+    animation: custom-spin 1s linear infinite !important;
 }
 
-.dash {
-    animation: dashArray 2s ease-in-out infinite, dashOffset 2s linear infinite;
+.loading-text {
+    letter-spacing: 4px;
+    font-size: 0.85rem;
 }
-
-@keyframes dashArray {
-    0% {
-        stroke-dasharray: 0 1 359 0;
-    }
-
-    50% {
-        stroke-dasharray: 0 359 1 0;
-    }
-
-    100% {
-        stroke-dasharray: 359 1 0 0;
-    }
-}
-
-@keyframes dashOffset {
-    0% {
-        stroke-dashoffset: 365;
-    }
-
-    100% {
-        stroke-dashoffset: 5;
-    }
-}
-/* END LOADER DESIGN */
+/* --- END GLOBAL LOADER STYLES --- */
