@@ -48,24 +48,26 @@ body {
 
 
 
-/* START LOADER */
+/* START LOADER DESIGN */
 .loader-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-    display: flex;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex; /* Keep as flex to allow opacity transition */
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 99999;
+    /* Fade logic */
     opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    transition: opacity 0.4s ease-in-out; /* Increased to 0.4s for smoother feel */
     pointer-events: none;
-    /* Apply the blur to the content behind the overlay */
     backdrop-filter: blur(3px);
-    -webkit-backdrop-filter: blur(3px); /* Support for Safari */
+    -webkit-backdrop-filter: blur(3px);
 }
 
     /* State triggered by JavaScript */
@@ -74,7 +76,13 @@ body {
         pointer-events: all;
     }
 
-/* Bootstrap-style utility used by your JS */
+/* Prevent background scrolling */
+body.loader-active {
+    overflow: hidden !important;
+    touch-action: none;
+}
+
+/* Hidden state for when transition is finished */
 .d-none {
     display: none !important;
 }
@@ -82,7 +90,7 @@ body {
 .loader {
     display: flex;
     gap: 15px;
-    color: #FFFFF0; /* Ivory White */
+    color: #FFFFF0;
 }
 
 .inline-block {
@@ -90,7 +98,6 @@ body {
 }
 
 .dash {
-    /* This creates the 'drawing' effect */
     animation: dashArray 2s ease-in-out infinite, dashOffset 2s linear infinite;
 }
 
@@ -117,4 +124,4 @@ body {
         stroke-dashoffset: 5;
     }
 }
-/* END LOADER */
+/* END LOADER DESIGN */

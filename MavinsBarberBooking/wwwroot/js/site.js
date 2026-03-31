@@ -17,23 +17,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-// Global Loader Logic
+// START LOADER LOGIC
 document.addEventListener("DOMContentLoaded", function () {
-    // Ensure your HTML <div class="loader"> has id="global-loader"
     const loader = document.getElementById('global-loader');
     let loaderTimer;
-    const MIN_DISPLAY_TIME = 1000; // 1 second minimum
+    const MIN_DISPLAY_TIME = 1000;
 
     if (!loader) return;
 
-    // 1. Check if we should still be showing a loader from the previous page
     const storedStartTime = sessionStorage.getItem('loaderStartTime');
     if (storedStartTime) {
         const elapsedTime = Date.now() - parseInt(storedStartTime);
-
         if (elapsedTime < MIN_DISPLAY_TIME) {
+            // Instant show if navigating
             loader.classList.remove('d-none');
-            loader.classList.add('show-loader');
+            // Small delay to ensure browser registers the removal of d-none before starting transition
+            setTimeout(() => {
+                loader.classList.add('show-loader');
+                document.body.classList.add('loader-active');
+            }, 10);
 
             setTimeout(() => {
                 hideLoader();
@@ -46,7 +48,6 @@ document.addEventListener("DOMContentLoaded", function () {
         hideLoader();
     }
 
-    // 2. Hide loader if user clicks the browser's "Back" button
     window.addEventListener('pageshow', function (event) {
         if (event.persisted) {
             sessionStorage.removeItem('loaderStartTime');
@@ -54,44 +55,34 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // 3. Show loader when clicking any link
     document.querySelectorAll('a').forEach(link => {
         link.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
             const target = this.getAttribute('target');
-
             if (href && !href.startsWith('#') && !href.startsWith('javascript') && target !== '_blank' && !e.ctrlKey && !e.metaKey) {
                 showLoader();
             }
         });
     });
 
-    // 4. Show loader when submitting any form (using jQuery as per your original)
     if (window.jQuery) {
         $('form').on('submit', function () {
             let isValid = true;
-            if ($(this).data('validator')) {
-                isValid = $(this).valid();
-            }
-
-            if (isValid) {
-                showLoader();
-            } else {
-                hideLoader();
-            }
+            if ($(this).data('validator')) { isValid = $(this).valid(); }
+            if (isValid) { showLoader(); } else { hideLoader(); }
         });
     }
-
-    // --- Helper Functions ---
 
     function showLoader() {
         clearTimeout(loaderTimer);
         loader.classList.remove('d-none');
+        document.body.classList.add('loader-active');
 
+        // Delay the opacity class slightly so the 'd-none' removal is processed first
         loaderTimer = setTimeout(() => {
             loader.classList.add('show-loader');
             sessionStorage.setItem('loaderStartTime', Date.now().toString());
-        }, 300);
+        }, 400);
     }
 
     function hideLoader() {
@@ -99,15 +90,20 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (!loader.classList.contains('show-loader')) {
             loader.classList.add('d-none');
+            document.body.classList.remove('loader-active');
             return;
         }
 
         sessionStorage.removeItem('loaderStartTime');
         loader.classList.remove('show-loader');
+        document.body.classList.remove('loader-active');
 
+        // Wait for CSS transition (0.4s) to finish before adding d-none
         setTimeout(() => {
-            loader.classList.add('d-none');
-        }, 300);
+            if (!loader.classList.contains('show-loader')) {
+                loader.classList.add('d-none');
+            }
+        }, 400);
     }
 });
-// End of Global Loader Logic
+// END LOADER LOGIC
