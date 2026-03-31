@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // Global Loader Logic
 document.addEventListener("DOMContentLoaded", function () {
+    // Ensure your HTML <div class="loader"> has id="global-loader"
     const loader = document.getElementById('global-loader');
     let loaderTimer;
     const MIN_DISPLAY_TIME = 1000; // 1 second minimum
@@ -31,21 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
         const elapsedTime = Date.now() - parseInt(storedStartTime);
 
         if (elapsedTime < MIN_DISPLAY_TIME) {
-            // Keep it visible and show it immediately (no 100ms delay here)
             loader.classList.remove('d-none');
             loader.classList.add('show-loader');
 
-            // Wait for the remainder of the 1s
             setTimeout(() => {
                 hideLoader();
             }, MIN_DISPLAY_TIME - elapsedTime);
         } else {
-            // Time already passed, clean up
             sessionStorage.removeItem('loaderStartTime');
             hideLoader();
         }
     } else {
-        // Normal page load finish (no navigation-triggered loader)
         hideLoader();
     }
 
@@ -69,19 +66,21 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
-    // 4. Show loader when submitting any form
-    $('form').on('submit', function () {
-        let isValid = true;
-        if ($(this).data('validator')) {
-            isValid = $(this).valid();
-        }
+    // 4. Show loader when submitting any form (using jQuery as per your original)
+    if (window.jQuery) {
+        $('form').on('submit', function () {
+            let isValid = true;
+            if ($(this).data('validator')) {
+                isValid = $(this).valid();
+            }
 
-        if (isValid) {
-            showLoader();
-        } else {
-            hideLoader();
-        }
-    });
+            if (isValid) {
+                showLoader();
+            } else {
+                hideLoader();
+            }
+        });
+    }
 
     // --- Helper Functions ---
 
@@ -91,7 +90,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
         loaderTimer = setTimeout(() => {
             loader.classList.add('show-loader');
-            // Store the start time so the next page knows when it began
             sessionStorage.setItem('loaderStartTime', Date.now().toString());
         }, 300);
     }
@@ -99,19 +97,17 @@ document.addEventListener("DOMContentLoaded", function () {
     function hideLoader() {
         clearTimeout(loaderTimer);
 
-        // Only hide if the loader is currently "active"
         if (!loader.classList.contains('show-loader')) {
             loader.classList.add('d-none');
             return;
         }
 
-        // We only remove the item when we are actually starting the hide transition
         sessionStorage.removeItem('loaderStartTime');
-
         loader.classList.remove('show-loader');
+
         setTimeout(() => {
             loader.classList.add('d-none');
-        }, 300); // Wait for CSS transition
+        }, 300);
     }
 });
 // End of Global Loader Logic

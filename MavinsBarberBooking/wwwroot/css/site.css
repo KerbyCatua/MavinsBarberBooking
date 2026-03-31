@@ -48,62 +48,73 @@ body {
 
 
 
-
-/* --- GLOBAL LOADER STYLES --- */
-.global-loader {
+/* START LOADER */
+.loader-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.2);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    z-index: 99999;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    z-index: 9999;
     opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    /* Apply the blur to the content behind the overlay */
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px); /* Support for Safari */
 }
 
-    .global-loader.show-loader {
+    /* State triggered by JavaScript */
+    .loader-overlay.show-loader {
         opacity: 1;
-        visibility: visible;
+        pointer-events: all;
     }
 
-    /* Helper class for the JavaScript */
-    .global-loader.d-none {
-        display: none !important;
-    }
-
-.spinner-container {
-    text-align: center;
+/* Bootstrap-style utility used by your JS */
+.d-none {
+    display: none !important;
 }
 
-/* Add the custom keyframe animation for spinning */
-@keyframes custom-spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
-    }
+.loader {
+    display: flex;
+    gap: 15px;
+    color: #FFFFF0; /* Ivory White */
 }
 
-.loading-icon {
-    font-size: 3.5rem;
-    color: #ffffff;
-    /* Force it to be inline-block so transform works */
+.inline-block {
     display: inline-block;
-    /* Apply the custom animation indefinitely */
-    animation: custom-spin 1s linear infinite !important;
 }
 
-.loading-text {
-    letter-spacing: 4px;
-    font-size: 0.85rem;
+.dash {
+    /* This creates the 'drawing' effect */
+    animation: dashArray 2s ease-in-out infinite, dashOffset 2s linear infinite;
 }
-/* --- END GLOBAL LOADER STYLES --- */
+
+@keyframes dashArray {
+    0% {
+        stroke-dasharray: 0 1 359 0;
+    }
+
+    50% {
+        stroke-dasharray: 0 359 1 0;
+    }
+
+    100% {
+        stroke-dasharray: 359 1 0 0;
+    }
+}
+
+@keyframes dashOffset {
+    0% {
+        stroke-dashoffset: 365;
+    }
+
+    100% {
+        stroke-dashoffset: 5;
+    }
+}
+/* END LOADER */
