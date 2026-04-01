@@ -1,9 +1,11 @@
 using MavinsBarberBooking.Services;
 using Microsoft.Data.SqlClient;
 using System.Data;
-using Microsoft.AspNetCore.Authentication.Cookies; // ADDED THIS
-using Microsoft.AspNetCore.Authentication; // ADDED THIS
-using Dapper; // ADDED THIS
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
+using Dapper;
+using Microsoft.AspNetCore.RateLimiting; // --- ADDED RATE LIMITING NAMESPACE ---
+using System.Threading.RateLimiting;     // --- ADDED RATE LIMITING NAMESPACE ---
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,30 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(20);
 });
+
+// --- ADDED RATE LIMITING SERVICE CONFIGURATION ---
+builder.Services.AddRateLimiter(options =>
+{
+    // Apply a global rate limit based on the client's IP address
+    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        RateLimitPartition.GetFixedWindowLimiter(
+            partitionKey: httpContext.Connection.RemoteIpAddress?.ToString() ?? httpContext.Request.Headers.Host.ToString(),
+            factory: partition => new FixedWindowRateLimiterOptions
+            {
+                AutoReplenishment = true,
+                PermitLimit = 100, // Maximum 100 requests...
+                Window = TimeSpan.FromMinutes(1), // ...per 1 minute window
+                QueueLimit = 0 // Do not queue excessive requests; reject immediately
+            }));
+
+    // Custom response when a user exceeds the limit
+    options.OnRejected = async (context, token) =>
+    {
+        context.HttpContext.Response.StatusCode = StatusCodes.Status429TooManyRequests;
+        await context.HttpContext.Response.WriteAsync("Too many requests. Please try again later.", token);
+    };
+});
+// --------------------------------------------------
 
 // --- ADDED COOKIE AUTHENTICATION LOGIC HERE ---
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -74,6 +100,10 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// --- ADDED RATE LIMITING MIDDLEWARE ---
+app.UseRateLimiter(); // Must be called after UseRouting and before UseAuthentication/UseAuthorization
+// --------------------------------------
 
 // --- ADDED THIS LINE ---
 app.UseAuthentication(); // Must come before UseAuthorization!
