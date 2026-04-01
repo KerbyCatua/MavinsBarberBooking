@@ -17,7 +17,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-// Global Loader Logic
+
+
+
+// --- Global Loader Logic ---
 document.addEventListener("DOMContentLoaded", function () {
     const loader = document.getElementById('global-loader');
     let loaderTimer;
@@ -93,7 +96,7 @@ document.addEventListener("DOMContentLoaded", function () {
             loader.classList.add('show-loader');
             // Store the start time so the next page knows when it began
             sessionStorage.setItem('loaderStartTime', Date.now().toString());
-        }, 300);
+        }, 300); // Wait a short delay before showing the loader to avoid flashing on very fast loads
     }
 
     function hideLoader() {
@@ -114,4 +117,4 @@ document.addEventListener("DOMContentLoaded", function () {
         }, 300); // Wait for CSS transition
     }
 });
-// End of Global Loader Logic
+// --- End of Global Loader Logic ---
