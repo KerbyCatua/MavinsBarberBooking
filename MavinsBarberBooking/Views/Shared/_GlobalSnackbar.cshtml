@@ -1,0 +1,11 @@
+@if (!string.IsNullOrEmpty(ViewBag.Message) || !string.IsNullOrEmpty(ViewData["Message"] as string) || (TempData["Message"] != null))
+{
+    var message = ViewBag.Message ?? ViewData["Message"] ?? TempData["Message"];
+
+    <div id="global-snackbar" class="global-snackbar" data-message="@message">
+        <div class="snackbar-content">
+            <span class="snackbar-message">@message</span>
+        </div>
+        <div class="snackbar-timer-line"></div>
+    </div>
+}

@@ -58,3 +58,42 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 // --- End of Global Loader Logic ---
+
+
+
+
+
+
+
+
+
+// --- Global Snackbar Logic ---
+document.addEventListener("DOMContentLoaded", function () {
+    const snackbar = document.getElementById('global-snackbar');
+
+    if (!snackbar) return;
+
+    // Function to initialize and display the snackbar
+    function initializeSnackbar() {
+        // Show the snackbar with fade-in animation
+        snackbar.classList.add('show-snackbar');
+
+        // After 4 seconds, trigger fade-out animation
+        const fadeOutTimer = setTimeout(() => {
+            snackbar.classList.add('fade-out');
+        }, 4000);
+
+        // After fade-out completes (4.4s total), remove the snackbar from DOM
+        const removeTimer = setTimeout(() => {
+            snackbar.remove();
+        }, 4400);
+
+        // Store timers for potential cleanup if needed
+        snackbar.dataset.fadeOutTimer = fadeOutTimer;
+        snackbar.dataset.removeTimer = removeTimer;
+    }
+
+    // Initialize the snackbar immediately on page load
+    initializeSnackbar();
+});
+// --- End of Global Snackbar Logic ---

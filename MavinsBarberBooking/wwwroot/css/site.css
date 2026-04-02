@@ -107,3 +107,106 @@ body {
     font-size: 0.85rem;
 }
 /* --- END GLOBAL LOADER STYLES --- */
+
+
+
+
+/* --- GLOBAL SNACKBAR STYLES --- */
+.global-snackbar {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background-color: #808080;
+    /* Uncomment below for Gray-to-Black gradient effect */
+    /* background: linear-gradient(0deg, #808080 0%, #222222 100%); */
+    color: #ffffff;
+    padding: 1rem 1.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 99998;
+    min-width: 350px;
+    max-width: 500px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+}
+
+    .global-snackbar.show-snackbar {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        animation: snackbar-fade-in 0.4s ease forwards;
+    }
+
+    .global-snackbar.fade-out {
+        animation: snackbar-fade-out 0.4s ease forwards;
+    }
+
+.snackbar-content {
+    display: flex;
+    align-items: center;
+    min-height: 2rem;
+}
+
+.snackbar-message {
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.5px;
+}
+
+.snackbar-timer-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 0 0 0.5rem 0;
+    animation: timer-deplete 4s linear forwards;
+}
+
+/* Keyframe Animations */
+@keyframes snackbar-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes snackbar-fade-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+}
+
+@keyframes timer-deplete {
+    from {
+        width: 100%;
+    }
+
+    to {
+        width: 0%;
+    }
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 576px) {
+    .global-snackbar {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+        max-width: none;
+    }
+}
+/* --- END GLOBAL SNACKBAR STYLES --- */

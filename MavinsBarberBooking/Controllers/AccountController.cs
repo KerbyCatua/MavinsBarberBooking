@@ -71,7 +71,9 @@ namespace MavinsBarberBooking.Controllers
             HttpContext.Session.SetString("TempLastName", model.LastName);
             HttpContext.Session.SetString("TempPassword", model.Password);
 
+            // SUCCESSFUL LOGIN
             TempData["SuccessMessage"] = "Verification code sent to your email. Please check your inbox.";
+            TempData["Message"] = "Verification code sent to your email";
             return RedirectToAction("VerifyEmail", new { email = model.Email } );
         }
 
@@ -149,7 +151,9 @@ namespace MavinsBarberBooking.Controllers
             // Clear session
             HttpContext.Session.Clear();
 
+            // SUCCESSFUL LOGIN
             TempData["SuccessMessage"] = "Email verified successfully! You can now login.";
+            TempData["Message"] = "Email verified! You can now log in.";
             return RedirectToAction("Login");
         }
 
@@ -221,6 +225,8 @@ namespace MavinsBarberBooking.Controllers
 
             // --- SESSION TRACKING LOGIC ENDS HERE ---
 
+            // SUCCESSFUL LOGIN
+            TempData["Message"] = "Login Successfuly";
             return RedirectToAction("Index", "Home");
         }
 
