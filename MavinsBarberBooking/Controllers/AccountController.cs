@@ -278,6 +278,7 @@ namespace MavinsBarberBooking.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             // 4. Redirect them back to the home page or login page
+            TempData["Message"] = "Logged out successfully";
             return RedirectToAction("Index", "Home");
         }
 
