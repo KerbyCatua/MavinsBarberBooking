@@ -1,43 +1,26 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
-    Layout = null;
+    Layout = "_Layout";
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - MavinsBarberBooking</title>
-
-    <link rel="icon" type="image/x-icon" href="~/images/logos/mavins-tab-logo.webp" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/MavinsBarberBooking.styles.css" asp-append-version="true" />
-
+@section Scripts {
     <link rel="stylesheet" href="~/css/home/Index.css" asp-append-version="true" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
-</head>
-
-<body>
-    <partial name="_GlobalSnackbar" />
-
-    <div class="content-wrapper">
-        <partial name="_Navbar" />
+    <script src="~/js/home/Index.js" asp-append-version="true"></script>
+}
 
         <div class="container-fluid px-5 py-5 mt-5">
             <div class="row">
-                <div class="col-md-7">
-                    <h1 class="display-2 fw-bolder hero-title mb-0 reveal-element">Mavins</h1>
-                    <h1 class="display-2 fw-bolder hero-title reveal-element">Barbershop</h1>
+                <div class="col-md-7 reveal-element">
+                    <h1 class="display-2 fw-bolder hero-title mb-0">Mavins</h1>
+                    <h1 class="display-2 fw-bolder hero-title">Barbershop</h1>
 
-                    <p class="hero-subtitle mt-4 fs-5 reveal-element">
+                    <p class="hero-subtitle mt-4 fs-5">
                         Welcome to Mavins Barbershop. Our Barbers are skilled professionals specializing
                         in men’s hair care. We offer a variety of services, including haircuts, Anti dandruff
                         treatment, shaves, Hair color & styling.
                     </p>
 
-                    <div class="mt-5 d-flex gap-3 reveal-element">
+                    <div class="mt-5 d-flex gap-3">
                         <button class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">BOOK NOW</button>
                         @if (!(User.Identity != null && User.Identity.IsAuthenticated))
                         {
@@ -121,14 +104,3 @@
             </div>
 
         </section>
-
-    </div>
-
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <partial name="_ValidationScriptsPartial" />
-
-    <script src="~/js/home/Index.js" asp-append-version="true"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-</body>
-</html>

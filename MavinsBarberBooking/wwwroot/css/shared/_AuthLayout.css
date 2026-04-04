@@ -1,0 +1,326 @@
+/* --- AUTH LAYOUT STYLES --- */
+
+/* Background gradient for auth pages */
+.auth-background {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #e8e8e8 0%, #a0a0a0 45%, #222222 100%);
+    background-attachment: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Brand graphics positioning */
+.auth-background .mavins-line {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 50%;
+    max-width: 600px;
+    opacity: 1;
+    z-index: 1;
+}
+
+.auth-background .mavins-tab-logo {
+    position: absolute;
+    left: 10%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 200px;
+    height: 200px;
+    opacity: 0.3;
+    z-index: 0;
+}
+
+/* Form Card Container */
+.auth-card {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 3rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    max-width: 450px;
+    width: 100%;
+    z-index: 10;
+    position: relative;
+}
+
+@media (max-width: 1024px) {
+    .auth-background .mavins-line {
+        width: 40%;
+        max-width: 400px;
+    }
+
+    .auth-background .mavins-tab-logo {
+        width: 150px;
+        height: 150px;
+        left: 5%;
+    }
+
+    .auth-card {
+        padding: 2.5rem;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .auth-background {
+        padding: 1rem;
+    }
+
+    .auth-background .mavins-line {
+        width: 35%;
+        max-width: 300px;
+        opacity: 0.5;
+    }
+
+    .auth-background .mavins-tab-logo {
+        display: none;
+    }
+
+    .auth-card {
+        padding: 2rem;
+        max-width: 100%;
+    }
+}
+
+/* Typography */
+.auth-welcome {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #666666;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.auth-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+}
+
+.auth-subtitle {
+    font-size: 0.95rem;
+    color: #666666;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .auth-title {
+        font-size: 2rem;
+    }
+}
+
+/* Form Elements */
+.form-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin-bottom: 0.5rem;
+}
+
+.form-control-auth {
+    padding: 0.875rem 1rem;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background-color: #ffffff;
+    color: #333333;
+}
+
+    .form-control-auth::placeholder {
+        color: #999999;
+    }
+
+    .form-control-auth:focus {
+        border-color: #333333;
+        box-shadow: 0 0 0 3px rgba(51, 51, 51, 0.1);
+        background-color: #ffffff;
+    }
+
+/* Buttons */
+.btn-auth-primary {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    width: 100%;
+    cursor: pointer;
+}
+
+    .btn-auth-primary:hover {
+        background-color: #0d0d0d;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn-auth-primary:active {
+        transform: translateY(0);
+    }
+
+.btn-auth-secondary {
+    padding: 0.875rem 2rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+    .btn-auth-secondary:hover {
+        background-color: #0d0d0d;
+    }
+
+/* Form Groups */
+.form-group-auth {
+    margin-bottom: 1.25rem;
+}
+
+    .form-group-auth:last-child {
+        margin-bottom: 1.5rem;
+    }
+
+/* Form Actions */
+.form-actions-auth {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+    .form-actions-auth .btn {
+        flex: 1;
+    }
+
+/* Helper Text */
+.auth-helper-text {
+    font-size: 0.85rem;
+    color: #666666;
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+    .auth-helper-text a {
+        color: #1a1a1a;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+        .auth-helper-text a:hover {
+            text-decoration: underline;
+        }
+
+/* Checkbox */
+.form-check-auth {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+    .form-check-auth input[type="checkbox"] {
+        margin: 0;
+        cursor: pointer;
+    }
+
+    .form-check-auth label {
+        margin: 0;
+        cursor: pointer;
+        font-size: 0.9rem;
+        color: #666666;
+    }
+
+/* Link Styling */
+.auth-link {
+    color: #666666;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+    .auth-link:hover {
+        color: #1a1a1a;
+        text-decoration: underline;
+    }
+
+/* Password Toggle Button */
+.password-toggle-auth {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #999999;
+    cursor: pointer;
+    padding: 0;
+    z-index: 10;
+    font-size: 1rem;
+}
+
+    .password-toggle-auth:hover {
+        color: #333333;
+    }
+
+/* Validation Error */
+.text-danger {
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* Reveal Animation */
+.reveal-element {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: reveal-fade-in 0.6s ease forwards;
+}
+
+    .reveal-element:nth-child(1) {
+        animation-delay: 0.1s;
+    }
+
+    .reveal-element:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .reveal-element:nth-child(3) {
+        animation-delay: 0.3s;
+    }
+
+    .reveal-element:nth-child(4) {
+        animation-delay: 0.4s;
+    }
+
+    .reveal-element:nth-child(5) {
+        animation-delay: 0.5s;
+    }
+
+    .reveal-element:nth-child(n+6) {
+        animation-delay: 0.6s;
+    }
+
+@keyframes reveal-fade-in {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* --- END AUTH LAYOUT STYLES --- */

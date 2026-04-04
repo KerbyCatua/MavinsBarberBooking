@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -11,21 +11,17 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/MavinsBarberBooking.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Page-specific styles via section -->
+    @await RenderSectionAsync("Styles", required: false)
 </head>
 <body>
     <!-- Global Components -->
     <partial name="_GlobalLoader" />
     <partial name="_GlobalSnackbar" />
 
-    <div class="content-wrapper">
-        <!-- Navigation -->
-        <partial name="_Navbar" />
-
-        <!-- Main Content -->
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+    <!-- Auth Content -->
+    @RenderBody()
 
     <!-- Global Scripts -->
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
