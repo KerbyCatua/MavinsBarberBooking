@@ -26,8 +26,9 @@
 
             <!-- Verification Code Form -->
             <form method="post" id="verifyForm">
-                <!-- Hidden input for actual model binding -->
-                <input type="hidden" id="verificationCode" asp-for="VerificationCode" />
+                <!-- Hidden inputs for model binding -->
+                <input type="hidden" name="email" value="@ViewData["Email"]" />
+                <input type="hidden" id="verificationCode" name="verificationCode" />
 
                 <!-- 6 separate input boxes for the code -->
                 <div class="d-flex justify-content-center gap-2 gap-sm-3 mb-4" id="otp-container">
@@ -59,8 +60,7 @@
     <script>
             document.addEventListener('DOMContentLoaded', function () {
             const otpInputs = document.querySelectorAll('.otp-input');
-            // Using querySelector to find the input by name attribute assigned by asp-for
-            const hiddenCodeInput = document.querySelector('input[name="VerificationCode"]');
+            const hiddenCodeInput = document.querySelector('input[name="verificationCode"]');
             const form = document.getElementById('verifyForm');
 
             function updateHiddenInput() {
