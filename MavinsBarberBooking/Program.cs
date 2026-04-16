@@ -253,6 +253,19 @@ using (var scope = app.Services.CreateScope())
             END
         ";
 
+        string TimeSlotsSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'TimeSlots')
+            BEGIN
+                CREATE TABLE TimeSlots (
+                    SlotId INT PRIMARY KEY IDENTITY(1,1),
+                    BarberId INT NOT NULL,
+                    StartTime DATETIME NOT NULL,
+                    EndTime DATETIME NOT NULL,
+                    FOREIGN KEY (BarberId) REFERENCES Barbers(BarberId) ON DELETE CASCADE
+                );
+            END
+        ";
+
         // You can add more CREATE TABLE scripts here for your Barbershop system
 
         // Execute them in the CORRECT order (Parents first, then Children)
@@ -276,6 +289,9 @@ using (var scope = app.Services.CreateScope())
         command.ExecuteNonQuery();
 
         command.CommandText = BarberServicesSql; // Needs Barbers and Services
+        command.ExecuteNonQuery();
+
+        command.CommandText = TimeSlotsSql;
         command.ExecuteNonQuery();
     }
     catch (Exception ex)

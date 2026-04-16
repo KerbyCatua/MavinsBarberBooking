@@ -33,9 +33,18 @@
             <hr class="sidebar-divider" />
 
             <div class="sidebar-nav-links">
-                <a href="#">Settings</a>
+                @{
+                    var RouteUserProfile = User.FindFirst(ClaimTypes.Role)?.Value switch
+                    {
+                        "Admin" => "/Admin/Index", // to be updated to /Admin/Profile when the profile page is created
+                        "Barber" => "/Barber/Profile",
+                        "Customer" => "/Customer/Profile",
+                        _ => ""
+                    };
+                }
+                <a href="@RouteUserProfile">Profile</a>
                 <a href="#">Notifications</a>
-                <a href="#">Support</a>
+                <a href="#">Settings</a>
                 <a href="#">Help</a>
                 <a href="#">Share</a>
             </div>

@@ -1,0 +1,385 @@
+﻿@model MavinsBarberBooking.Models.ViewModels.BarberProfileViewModel
+
+@{
+    ViewData["Title"] = "Barber Profile";
+    Layout = "_AuthLayout";
+}
+
+@section Styles {
+
+}
+
+<style>
+    body {
+        background-color: #2b2b2b; /* Fallback dark background matching edges of design */
+        color: #ffffff;
+    }
+
+    .glass-panel {
+        background: rgba(0, 0, 0, 0.3);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+        padding: 24px;
+        margin-bottom: 24px;
+    }
+
+    .glass-item {
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .profile-img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .btn-glass {
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        color: white;
+        transition: background 0.3s;
+    }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
+        }
+
+    .form-control-glass {
+        background: rgba(0, 0, 0, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+        .form-control-glass:focus {
+            background: rgba(0, 0, 0, 0.3);
+            color: white;
+            border-color: rgba(255,255,255,0.5);
+            box-shadow: none;
+        }
+
+    .form-check-input:checked {
+        background-color: #5cb85c;
+        border-color: #5cb85c;
+    }
+
+
+    /* --- NEW: CUSTOM MODAL OVERLAY STYLING --- */
+    .modal-backdrop.show {
+        opacity: 0.9 !important;
+        backdrop-filter: blur(5px);
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .modal-content.glass-modal {
+        background: #2b2b2b;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        color: white;
+    }
+
+    .z-9999 {
+        z-index: 9999 !important;
+    }
+</style>
+
+
+<div class="container mt-5">
+
+    <!-- Top Header Profile Section -->
+    <div class="glass-panel d-flex align-items-center justify-content-between flex-wrap">
+        <div class="d-flex align-items-center mb-3 mb-md-0">
+            <img src="@(string.IsNullOrEmpty(Model.ProfileImage) ? "/images/default-avatar.png" : Model.ProfileImage)" alt="Profile" class="profile-img me-4" />
+            <div>
+                <h2 class="mb-1 fw-bold">@Model.Name</h2>
+                <p class="mb-0 text-light opacity-75">Professional Barber & @Model.Rank</p>
+            </div>
+        </div>
+        <div>
+            <a href="/Home/Index" class="btn btn-glass px-4 py-2 rounded-pill">Close</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Service List Section -->
+        <div class="col-lg-5 mb-4">
+            <div class="glass-panel h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 fw-bold">Barber Service List</h4>
+                    <!-- Add Service Button triggers Modal -->
+                    <button class="btn btn-glass rounded-3 px-3" data-bs-toggle="modal" data-bs-target="#addServiceModal">
+                        <i class="fa-solid fa-plus"></i>
+                    </button>
+                </div>
+
+                @if (!Model.Services.Any())
+                {
+                    <p class="text-muted">No services added yet.</p>
+                }
+                else
+                {
+                    @foreach (var service in Model.Services)
+                    {
+                        <div class="glass-item d-flex justify-content-between align-items-center">
+
+                            <!-- Left Side: Image and Text (with flex-grow and min-width:0 to allow text wrapping) -->
+                            <div class="d-flex align-items-center me-3 flex-grow-1" style="min-width: 0;">
+
+                                <!-- Render Image FIRST (Left side) with flex-shrink-0 so it doesn't get squeezed -->
+                                @if (!string.IsNullOrEmpty(service.ServiceImage))
+                                {
+                                    <img src="@service.ServiceImage" alt="@service.Name" class="me-3 rounded flex-shrink-0" style="width: 50px; height: 50px; object-fit: cover;" />
+                                }
+                                else
+                                {
+                                    <div class="me-3 rounded d-flex align-items-center justify-content-center flex-shrink-0" style="width: 50px; height: 50px; background-color: rgba(255,255,255,0.1);">
+                                        <i class="fa-solid fa-scissors opacity-50"></i>
+                                    </div>
+                                }
+
+                                <!-- Text Details -->
+                                <div>
+                                    <h5 class="mb-1 fw-bold text-break">@service.Name</h5>
+                                    <small class="opacity-75">@service.DurationMinutes Min • ₱@service.Price</small>
+                                </div>
+                            </div>
+
+                            <!-- Right Side: Edit/Delete Buttons (flex-nowrap prevents vertical stacking) -->
+                            <div class="d-flex flex-nowrap flex-shrink-0">
+                                <!-- Edit Button triggers JS to populate Modal -->
+                                <button class="btn btn-sm btn-link text-light text-decoration-none"
+                                        onclick="openEditModal('@service.ServiceId', '@service.Name.Replace("'", "\\'")', '@service.DurationMinutes', '@service.Price', '@(service.Details?.Replace("'", "\\'") ?? "")')">
+                                    <i class="fa-regular fa-pen-to-square"></i>
+                                </button>
+                                <!-- Delete Button triggers JS to populate Modal -->
+                                <button class="btn btn-sm btn-link text-light text-decoration-none"
+                                        onclick="openDeleteModal('@service.ServiceId', '@service.Name.Replace("'", "\\'")')">
+                                    <i class="fa-regular fa-trash-can"></i>
+                                </button>
+                            </div>
+
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+        <!-- Schedule Management Section -->
+        <div class="col-lg-7 mb-4">
+            <div class="glass-panel h-100">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h4 class="mb-0 fw-bold">Schedule Management</h4>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="acceptingBookings" @(Model.AvailabilityStatus == "Available" ? "checked" : "")>
+                        <label class="form-check-label ms-2" for="acceptingBookings"><small>Accepting Bookings</small></label>
+                    </div>
+                </div>
+
+                <!-- Add Availability Form -->
+                <div class="glass-item flex-column align-items-stretch mb-4 p-4">
+                    <h6 class="mb-3">Add Availability Slot</h6>
+                    <form asp-action="AddTimeSlot" method="post" class="row g-3">
+                        <input type="hidden" name="barberId" value="@Model.BarberId" />
+                        <div class="col-md-4">
+                            <label class="form-label small">Date</label>
+                            <input type="date" name="slotDate" class="form-control form-control-glass" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small">Start Time</label>
+                            <input type="time" name="startTime" class="form-control form-control-glass" required />
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label small">End Time</label>
+                            <input type="time" name="endTime" class="form-control form-control-glass" required />
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-glass px-4">Add</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Current Active Slots -->
+                <h6 class="mb-3 fw-bold">Current Active Slots</h6>
+                <div class="d-flex flex-wrap gap-2">
+                    @foreach (var slot in Model.TimeSlots)
+                    {
+                        <div class="btn btn-glass rounded-pill px-3 py-2 d-flex align-items-center">
+                            <span style="font-size: 0.9rem;">@slot.StartTime.ToString("MMM dd, hh:mm tt") - @slot.EndTime.ToString("hh:mm tt")</span>
+
+                            <form asp-action="DeleteTimeSlot" method="post" class="d-inline ms-2">
+                                <input type="hidden" name="slotId" value="@slot.SlotId" />
+                                <button type="submit" class="btn btn-sm p-0 text-light" style="line-height:1;"><i class="fa-solid fa-xmark"></i></button>
+                            </form>
+                        </div>
+                    }
+
+                    <button class="btn btn-glass rounded-pill px-3 py-2" data-bs-toggle="collapse" data-bs-target="#addRangeCollapse" aria-expanded="false">
+                        <i class="fa-solid fa-plus me-1"></i> Add New Range
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- ================= MODALS ================= -->
+<!-- ADD Service Modal -->
+<div class="modal fade z-9999" id="addServiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-modal">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold">Add New Service</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- CHANGE: Added enctype for file upload -->
+            <form asp-controller="Barber" asp-action="AddService" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="barberId" value="@Model.BarberId" />
+
+                    <!-- NEW: Image Upload & Checkbox -->
+                    <div class="mb-3">
+                        <label class="form-label small">Service Image</label>
+                        <input type="file" name="imageFile" class="form-control form-control-glass" accept="image/*" />
+                        <div class="form-check mt-2">
+                            <input class="form-check-input" type="checkbox" name="useDefaultImage" value="true" id="useDefaultImageCheck">
+                            <label class="form-check-label small" for="useDefaultImageCheck">
+                                Default Profile <span class="opacity-50">(Uses placeholder icon)</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Service Name</label>
+                        <input type="text" name="name" class="form-control form-control-glass" required placeholder="e.g. Modern Undercut" />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Duration (Minutes)</label>
+                            <input type="number" name="durationMinutes" class="form-control form-control-glass" required min="1" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Price (₱)</label>
+                            <input type="number" name="price" step="0.01" class="form-control form-control-glass" required min="0" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Details/Description</label>
+                        <textarea name="details" class="form-control form-control-glass" rows="3" placeholder="Brief description of the service"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success px-4">Add Service</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- EDIT Service Modal -->
+<div class="modal fade z-9999" id="editServiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-modal">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold">Edit Service</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- CHANGE: Added enctype for file upload -->
+            <form asp-action="EditService" method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="serviceId" id="editServiceId" />
+
+                    <!-- NEW: Image Upload -->
+                    <div class="mb-3">
+                        <label class="form-label small">Update Service Image</label>
+                        <input type="file" name="imageFile" class="form-control form-control-glass" accept="image/*" />
+                        <small class="opacity-50">Leave empty to keep the current image.</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label small">Service Name</label>
+                        <input type="text" name="name" id="editServiceName" class="form-control form-control-glass" required />
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Duration (Minutes)</label>
+                            <input type="number" name="durationMinutes" id="editServiceDuration" class="form-control form-control-glass" required min="1" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Price (₱)</label>
+                            <input type="number" name="price" step="0.01" id="editServicePrice" class="form-control form-control-glass" required min="0" />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Details/Description</label>
+                        <textarea name="details" id="editServiceDetails" class="form-control form-control-glass" rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- DELETE Service Modal -->
+<div class="modal fade z-9999" id="deleteServiceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-modal">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-danger">Delete Service</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-action="DeleteService" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="serviceId" id="deleteServiceId" />
+                    <p class="mb-0">Are you sure you want to delete the service: <strong id="deleteServiceNameSpan" class="text-warning"></strong>?</p>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger px-4">Confirm Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Scripts for Modal population -->
+@section Scripts {
+    <script>
+        function openEditModal(id, name, duration, price, details) {
+            document.getElementById('editServiceId').value = id;
+            document.getElementById('editServiceName').value = name;
+            document.getElementById('editServiceDuration').value = duration;
+            document.getElementById('editServicePrice').value = price;
+            document.getElementById('editServiceDetails').value = details;
+
+            var editModal = new bootstrap.Modal(document.getElementById('editServiceModal'));
+            editModal.show();
+        }
+
+        function openDeleteModal(id, name) {
+            document.getElementById('deleteServiceId').value = id;
+            document.getElementById('deleteServiceNameSpan').innerText = name;
+
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteServiceModal'));
+            deleteModal.show();
+        }
+    </script>
+}
