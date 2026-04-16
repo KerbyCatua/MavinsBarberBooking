@@ -3,21 +3,202 @@
     Layout = "_AuthLayout";
 }
 
-<div class="container">
-    <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
-        <div class="col-12 col-md-8 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h1 class="card-title mb-2">Admin Dashboard</h1>
-                    <p class="text-muted mb-4">We are currently working on this page.</p>
+<div class="p-4">
+    <header class="d-flex justify-content-between align-items-start mb-4 text-dark">
+        <div>
+            <h1 class="fw-bolder mb-0" style="letter-spacing: -1px;">Admin Control</h1>
+            <p class="mb-2 fw-medium">System-wide analytics and management.</p>
+            <span class="badge rounded-pill bg-black bg-opacity-25 text-dark px-3 py-2">Data as of April 14, 2026</span>
+        </div>
+        <div>
+            <a href="/Home/Index" class="btn bg-black bg-opacity-25 text-white fw-bold border-0 px-4 py-2 rounded-3 shadow-sm">Close</a>
+        </div>
+    </header>
 
-                    <div class="row justify-content-center">
-                        <div class="col-auto">
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Home</a>
-                        </div>
+    <main>
+        <section class="row g-3 mb-4">
+            <article class="col-md-3">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm h-100 rounded-3 text-white p-3">
+                    <h6 class="fw-bold mb-1">Pending Approval</h6>
+                    <h2 class="display-5 fw-bold mb-0">12</h2>
+                    <span class="text-danger small mt-auto">New Barber Request</span>
+                </div>
+            </article>
+
+            <article class="col-md-3">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm h-100 rounded-3 text-white p-3">
+                    <h6 class="fw-bold mb-1 text-white">Active Sessions</h6>
+                    <h2 class="display-5 fw-bold mb-0">84</h2>
+                    <span class="text-white-50 small mt-auto">User Online Now</span>
+                </div>
+            </article>
+
+            <article class="col-md-3">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm h-100 rounded-3 text-white p-3">
+                    <h6 class="fw-bold mb-1 text-white">Cancellation Rate</h6>
+                    <h2 class="display-5 fw-bold mb-0">2.4%</h2>
+                    <span class="text-success small mt-auto">Down 0.5% this month</span>
+                </div>
+            </article>
+
+            <article class="col-md-3">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm h-100 rounded-3 text-white p-3">
+                    <h6 class="fw-bold mb-1 text-white">Total Revenue</h6>
+                    <h2 class="display-5 fw-bold mb-0">₱245K</h2>
+                    <span class="text-white-50 small mt-auto">Year-to-date total</span>
+                </div>
+            </article>
+        </section>
+
+        <section class="row g-3 mb-4">
+            <article class="col-md-6">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm rounded-3 p-3 h-100">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h6 class="text-white fw-bold mb-0">APPOINTMENT VOLUME</h6>
+                        <select class="form-select form-select-sm w-auto bg-black bg-opacity-25 text-white border-0" aria-label="Filter appointment volume">
+                            <option value="">Select...</option>
+                        </select>
                     </div>
+                    <div class="bg-white bg-opacity-25 rounded-3 w-100 border border-white border-opacity-25" style="min-height: 250px;"></div>
+                </div>
+            </article>
+
+            <article class="col-md-6">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm rounded-3 p-3 h-100">
+                    <h6 class="text-white fw-bold mb-3">REVENUE BY BRANCH</h6>
+                    <div class="bg-white bg-opacity-25 rounded-3 w-100 border border-white border-opacity-25" style="min-height: 250px;"></div>
+                </div>
+            </article>
+        </section>
+
+        <section id="user-directory" class="mb-4">
+            <div class="card bg-black bg-opacity-25 border-0 shadow-sm text-white overflow-hidden" style="border-radius: 0.6rem;">
+                <div class="px-4 py-3 pt-4">
+                    <h6 class="fw-bold mb-0">User Directory</h6>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-borderless text-white align-middle mb-0 w-100">
+                        <thead class="border-top border-bottom border-white border-opacity-25 text-white" style="background-color: rgba(255, 255, 255, 0.2);">
+                            <tr>
+                                <th class="fw-normal py-3 ps-4">IDENTITY</th>
+                                <th class="fw-normal py-3">PERMISSION ROLE</th>
+                                <th class="fw-normal py-3">ACCOUNT STATUS</th>
+                                <th class="fw-normal py-3">LAST LOGIN</th>
+                                <th class="fw-normal py-3 pe-4 text-end">MANAGE</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-bottom border-white border-opacity-25">
+                                <td class="py-3 ps-4">
+                                    <strong class="d-block text-white">Jherald Kerby</strong>
+                                    <small class="text-white-50">kerby@email.com</small>
+                                </td>
+                                <td><span class="badge bg-transparent border border-white border-opacity-50 text-white px-3 py-1 fw-normal" style="border-radius: 3px;">ADMIN</span></td>
+                                <td><span class="badge px-3 py-1 fw-normal" style="background-color: #496a50; color: #ffffff; border: 1px solid #67a177; border-radius: 3px;">ACTIVE</span></td>
+                                <td class="text-white">Today, 10:45 AM</td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-link text-white text-decoration-none p-1 me-2" title="Edit">
+                                        <i class="fa-regular fa-pen-to-square fs-5"></i>
+                                    </button>
+                                    <button class="btn btn-link text-white text-decoration-none p-1" title="Delete">
+                                        <i class="fa-regular fa-trash-can fs-5"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom border-white border-opacity-25">
+                                <td class="py-3 ps-4">
+                                    <strong class="d-block text-white">Genrev Acorda</strong>
+                                    <small class="text-white-50">rev@email.com</small>
+                                </td>
+                                <td><span class="badge bg-transparent border border-white border-opacity-50 text-white px-3 py-1 fw-normal" style="border-radius: 3px;">BARBER</span></td>
+                                <td><span class="badge px-3 py-1 fw-normal" style="background-color: #496a50; color: #ffffff; border: 1px solid #67a177; border-radius: 3px;">ACTIVE</span></td>
+                                <td class="text-white">Yesterday</td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-link text-white text-decoration-none p-1 me-2" title="Edit">
+                                        <i class="fa-regular fa-pen-to-square fs-5"></i>
+                                    </button>
+                                    <button class="btn btn-link text-white text-decoration-none p-1" title="Delete">
+                                        <i class="fa-regular fa-trash-can fs-5"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom border-white border-opacity-25">
+                                <td class="py-3 ps-4">
+                                    <strong class="d-block text-white">Paolo Sagmit</strong>
+                                    <small class="text-white-50">pao@email.com</small>
+                                </td>
+                                <td><span class="badge bg-transparent border border-white border-opacity-50 text-white px-3 py-1 fw-normal" style="border-radius: 3px;">BARBER</span></td>
+                                <td><span class="badge px-3 py-1 fw-normal" style="background-color: #496a50; color: #ffffff; border: 1px solid #67a177; border-radius: 3px;">ACTIVE</span></td>
+                                <td class="text-white">Today, 1:30 PM</td>
+                                <td class="text-end pe-4">
+                                    <button class="btn btn-link text-white text-decoration-none p-1 me-2" title="Edit">
+                                        <i class="fa-regular fa-pen-to-square fs-5"></i>
+                                    </button>
+                                    <button class="btn btn-link text-white text-decoration-none p-1" title="Delete">
+                                        <i class="fa-regular fa-trash-can fs-5"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
+                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
+                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
+                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+
+        <section class="row g-3">
+            <article class="col-md-5">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm rounded-3 p-4 text-white h-100">
+                    <h6 class="fw-bold mb-4">RBAC Settings</h6>
+                    <ul class="list-group list-group-flush border-top border-white border-opacity-25">
+                        <li class="list-group-item bg-transparent px-0 py-3 border-bottom border-white border-opacity-25 d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong class="d-block text-white">Manage Financials</strong>
+                                <p class="mb-0 text-white-50 small">Allow staff to view daily sales reports</p>
+                            </div>
+                            <div class="form-check form-switch fs-4 mb-0">
+                                <input class="form-check-input bg-black bg-opacity-50 border-0" type="checkbox" role="switch">
+                            </div>
+                        </li>
+                        <li class="list-group-item bg-transparent px-0 py-3 border-bottom border-white border-opacity-25 d-flex justify-content-between align-items-center">
+                            <div>
+                                <strong class="d-block text-white">Modify Barber Schedules</strong>
+                                <p class="mb-0 text-white-50 small">Allow managers to override time slots</p>
+                            </div>
+                            <div class="form-check form-switch fs-4 mb-0">
+                                <input class="form-check-input bg-black bg-opacity-50 border-0" type="checkbox" role="switch">
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
+            <article class="col-md-7">
+                <div class="card bg-black bg-opacity-25 border-0 shadow-sm rounded-3 p-4 text-white h-100">
+                    <h6 class="fw-bold mb-4">Recent System Activity</h6>
+                    <ul class="list-unstyled mb-0 ms-2 border-start border-2 border-white border-opacity-25 ps-4 position-relative">
+                        <li class="mb-4 position-relative">
+                            <span class="position-absolute bg-white rounded-circle" style="width: 8px; height: 8px; left: -21px; top: 6px;"></span>
+                            <p class="mb-1 text-white"><strong class="text-white">Admin</strong> deleted user <em class="text-white-50">"TestUser_01"</em></p>
+                            <time class="text-white-50 small" datetime="2026-04-14T10:40:00">2 minutes ago</time>
+                        </li>
+                        <li class="mb-4 position-relative">
+                            <span class="position-absolute bg-white rounded-circle" style="width: 8px; height: 8px; left: -21px; top: 6px;"></span>
+                            <p class="mb-1 text-white"><strong class="text-white">Barber Rafael</strong> modified time slot for <em class="text-white-50">April 20</em></p>
+                            <time class="text-white-50 small" datetime="2026-04-14T09:42:00">1 hour ago</time>
+                        </li>
+                        <li class="position-relative">
+                            <span class="position-absolute bg-white rounded-circle" style="width: 8px; height: 8px; left: -21px; top: 6px;"></span>
+                            <p class="mb-1 text-white"><strong class="text-white">System</strong> backed up database to cloud</p>
+                            <time class="text-white-50 small" datetime="2026-04-14T07:42:00">3 hours ago</time>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </section>
+    </main>
 </div>
