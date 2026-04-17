@@ -1,4 +1,6 @@
-﻿@{
+﻿@model IEnumerable<MavinsBarberBooking.Models.Entities.User>
+
+@{
     ViewData["Title"] = "Admin Dashboard";
     Layout = "_AuthLayout";
 }
@@ -71,79 +73,97 @@
             </article>
         </section>
 
+        @* User Management *@
         <section id="user-directory" class="mb-4">
             <div class="card bg-black bg-opacity-25 border-0 shadow-sm text-white overflow-hidden" style="border-radius: 0.6rem;">
                 <div class="px-4 py-3 pt-4">
                     <h6 class="fw-bold mb-0">User Directory</h6>
                 </div>
 
-                <div class="table-responsive">
+                <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
                     <table class="table table-borderless text-white align-middle mb-0 w-100">
-                        <thead class="border-top border-bottom border-white border-opacity-25 text-white" style="background-color: rgba(255, 255, 255, 0.2);">
+                        <thead class="border-top border-bottom border-white border-opacity-25 text-white" style="background-color: rgba(255, 255, 255, 0.2); position: sticky; top: 0; z-index: 10; backdrop-filter: blur(8px);">
                             <tr>
                                 <th class="fw-normal py-3 ps-4">IDENTITY</th>
                                 <th class="fw-normal py-3">PERMISSION ROLE</th>
                                 <th class="fw-normal py-3">ACCOUNT STATUS</th>
-                                <th class="fw-normal py-3">LAST LOGIN</th>
+                                <th class="fw-normal py-3">CONTACT</th>
                                 <th class="fw-normal py-3 pe-4 text-end">MANAGE</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="border-bottom border-white border-opacity-25">
-                                <td class="py-3 ps-4">
-                                    <strong class="d-block text-white">Jherald Kerby</strong>
-                                    <small class="text-white-50">kerby@email.com</small>
-                                </td>
-                                <td><span class="badge bg-transparent border border-white border-opacity-50 text-white px-3 py-1 fw-normal" style="border-radius: 3px;">ADMIN</span></td>
-                                <td><span class="badge px-3 py-1 fw-normal" style="background-color: #496a50; color: #ffffff; border: 1px solid #67a177; border-radius: 3px;">ACTIVE</span></td>
-                                <td class="text-white">Today, 10:45 AM</td>
-                                <td class="text-end pe-4">
-                                    <button class="btn btn-link text-white text-decoration-none p-1 me-2" title="Edit">
-                                        <i class="fa-regular fa-pen-to-square fs-5"></i>
-                                    </button>
-                                    <button class="btn btn-link text-white text-decoration-none p-1" title="Delete">
-                                        <i class="fa-regular fa-trash-can fs-5"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-bottom border-white border-opacity-25">
-                                <td class="py-3 ps-4">
-                                    <strong class="d-block text-white">Genrev Acorda</strong>
-                                    <small class="text-white-50">rev@email.com</small>
-                                </td>
-                                <td><span class="badge bg-transparent border border-white border-opacity-50 text-white px-3 py-1 fw-normal" style="border-radius: 3px;">BARBER</span></td>
-                                <td><span class="badge px-3 py-1 fw-normal" style="background-color: #496a50; color: #ffffff; border: 1px solid #67a177; border-radius: 3px;">ACTIVE</span></td>
-                                <td class="text-white">Yesterday</td>
-                                <td class="text-end pe-4">
-                                    <button class="btn btn-link text-white text-decoration-none p-1 me-2" title="Edit">
-                                        <i class="fa-regular fa-pen-to-square fs-5"></i>
-                                    </button>
-                                    <button class="btn btn-link text-white text-decoration-none p-1" title="Delete">
-                                        <i class="fa-regular fa-trash-can fs-5"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-bottom border-white border-opacity-25">
-                                <td class="py-3 ps-4">
-                                    <strong class="d-block text-white">Paolo Sagmit</strong>
-                                    <small class="text-white-50">pao@email.com</small>
-                                </td>
-                                <td><span class="badge bg-transparent border border-white border-opacity-50 text-white px-3 py-1 fw-normal" style="border-radius: 3px;">BARBER</span></td>
-                                <td><span class="badge px-3 py-1 fw-normal" style="background-color: #496a50; color: #ffffff; border: 1px solid #67a177; border-radius: 3px;">ACTIVE</span></td>
-                                <td class="text-white">Today, 1:30 PM</td>
-                                <td class="text-end pe-4">
-                                    <button class="btn btn-link text-white text-decoration-none p-1 me-2" title="Edit">
-                                        <i class="fa-regular fa-pen-to-square fs-5"></i>
-                                    </button>
-                                    <button class="btn btn-link text-white text-decoration-none p-1" title="Delete">
-                                        <i class="fa-regular fa-trash-can fs-5"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
-                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
-                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
-                            <tr class="border-bottom border-white border-opacity-25"><td colspan="5" class="py-4"></td></tr>
+                            @if (Model != null && Model.Any())
+                            {
+                                foreach (var user in Model)
+                                {
+                                    <tr class="border-bottom border-white border-opacity-25">
+                                        <td class="py-3 ps-4">
+                                            <strong class="d-block text-white">@user.FirstName @user.LastName</strong>
+                                            <small class="text-white-50">@user.Email</small>
+                                        </td>
+                                        <td>
+                                            @{
+                                                // Set default transparent/white colors
+                                                string roleBg = "rgba(255, 255, 255, 0.1)";
+                                                string roleBorder = "rgba(255, 255, 255, 0.4)";
+
+                                                // HIGHLIGHT: Swap these RGBA values to match your exact brand colors!
+                                                if (user.Role == "Admin")
+                                                {
+                                                    roleBg = "rgba(13, 110, 253, 0.25)";     // Blue
+                                                    roleBorder = "rgba(13, 110, 253, 0.6)";
+                                                }
+                                                else if (user.Role == "Barber")
+                                                {
+                                                    roleBg = "rgba(253, 126, 20, 0.2)";      // Orange/Gold
+                                                    roleBorder = "rgba(253, 126, 20, 0.6)";
+                                                }
+                                                else if (user.Role == "Customer")
+                                                {
+                                                    roleBg = "rgba(255, 255, 255, 0.05)";    // Subtle Grey/White
+                                                    roleBorder = "rgba(255, 255, 255, 0.2)";
+                                                }
+                                            }
+
+                                            <span class="badge text-white py-1 fw-normal d-inline-block" style="background-color: @roleBg; border: 1px solid @roleBorder; border-radius: 3px; width: 100px;">
+                                                @user.Role
+                                            </span>
+                                        </td>
+                                        <td>
+                                            @if (user.IsActive)
+                                            {
+                                                <span class="badge px-3 py-1 fw-normal" style="background-color: #496a50; color: #ffffff; border: 1px solid #67a177; border-radius: 3px;">ACTIVE</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="badge px-3 py-1 fw-normal" style="background-color: #6a4949; color: #ffffff; border: 1px solid #a16767; border-radius: 3px;">INACTIVE</span>
+                                            }
+                                        </td>
+                                        <td class="text-white">@user.PhoneNumber</td>
+                                        <td class="pe-4">
+                                            <div class="d-flex flex-nowrap justify-content-end align-items-center">
+                                                <button class="btn btn-link text-white text-decoration-none p-1 me-2" title="Edit"
+                                                        onclick="openEditUserModal('@user.Id', '@user.FirstName.Replace("'", "\\'")', '@user.LastName.Replace("'", "\\'")', '@user.PhoneNumber', '@user.Role')">
+                                                    <i class="fa-regular fa-pen-to-square fs-5"></i>
+                                                </button>
+                                                <button class="btn btn-link text-white text-decoration-none p-1" title="Delete"
+                                                        onclick="openDeleteUserModal('@user.Id', '@($"{user.FirstName} {user.LastName}".Replace("'", "\\'"))', '@user.Email')">
+                                                    <i class="fa-regular fa-trash-can fs-5"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            else
+                            {
+                                <tr class="border-bottom border-white border-opacity-25">
+                                    <td colspan="5" class="py-5 text-center text-white-50">
+                                        <i class="fa-solid fa-users-slash fs-3 mb-2 d-block"></i>
+                                        No users available.
+                                    </td>
+                                </tr>
+                            }
                         </tbody>
                     </table>
                 </div>
@@ -202,3 +222,112 @@
         </section>
     </main>
 </div>
+
+
+
+
+
+
+
+
+
+
+@* ================= MODAL ================= *@
+
+
+<!-- EDIT User Modal -->
+<div class="modal fade z-9999" id="editUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <!-- HIGHLIGHT: Reused glass-modal classes -->
+        <div class="modal-content glass-modal text-white" style="background: #2b2b2b; border: 1px solid rgba(255, 255, 255, 0.2);">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold">Edit User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Admin" asp-action="EditUser" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="userId" id="editUserId" />
+
+                    <!-- HIGHLIGHT: Only Admin-editable fields -->
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">First Name</label>
+                            <input type="text" name="firstName" id="editFirstName" class="form-control text-white" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2);" required />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label small">Last Name</label>
+                            <input type="text" name="lastName" id="editLastName" class="form-control text-white" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2);" required />
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Phone Number</label>
+                        <input type="text" name="phoneNumber" id="editPhoneNumber" class="form-control text-white" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2);" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label small">Role</label>
+                        <select name="role" id="editRole" class="form-select text-white" style="background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.2);" required>
+                            <option value="Admin" class="text-dark">Admin</option>
+                            <option value="Barber" class="text-dark">Barber</option>
+                            <option value="Customer" class="text-dark">Customer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- DELETE User Modal -->
+<div class="modal fade z-9999" id="deleteUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content glass-modal text-white" style="background: #2b2b2b; border: 1px solid rgba(255, 255, 255, 0.2);">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold text-danger">Delete User</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Admin" asp-action="DeleteUser" method="post">
+                <div class="modal-body">
+                    <input type="hidden" name="userId" id="deleteUserId" />
+                    <p class="mb-0">Are you sure you want to delete <span id="deleteUserNameSpan" class="text-warning"></span> (<i><span id="deleteUserEmailSpan" class="text-white-50"></span></i>)? This action cannot be undone.</p>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-danger px-4">Confirm Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!-- HIGHLIGHT: JavaScript to populate modals on click -->
+@section Scripts {
+    <script>
+        function openEditUserModal(id, firstName, lastName, phone, role) {
+            document.getElementById('editUserId').value = id;
+            document.getElementById('editFirstName').value = firstName;
+            document.getElementById('editLastName').value = lastName;
+            document.getElementById('editPhoneNumber').value = phone;
+            document.getElementById('editRole').value = role;
+
+            var editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+            editModal.show();
+        }
+
+        function openDeleteUserModal(id, fullName, email) {
+            document.getElementById('deleteUserId').value = id;
+            document.getElementById('deleteUserNameSpan').innerText = fullName;
+            document.getElementById('deleteUserEmailSpan').innerText = email;
+
+            var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+            deleteModal.show();
+        }
+    </script>
+}
