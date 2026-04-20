@@ -81,9 +81,9 @@
                                         </div>
                                     </div>
 
-                                    <a href="#" class="text-white">
-                                        <i class="fa-solid fa-chevron-right fs-5"></i>
-                                    </a>
+                                <a asp-controller="Booking" asp-action="Index" asp-route-serviceId="@service.ServiceId" asp-route-barberId="@service.BarberId" class="text-white">
+                                    <i class="fa-solid fa-chevron-right fs-5"></i>
+                                </a>
                                 </div>
 
                                 <div class="collapse mt-3" id="details-@service.ServiceId">

@@ -8,6 +8,7 @@
         public decimal Price { get; set; }
         public string Details { get; set; }
 
+        public int BarberId { get; set; }
         public string BarberName { get; set; }
 
         public string DurationDisplay

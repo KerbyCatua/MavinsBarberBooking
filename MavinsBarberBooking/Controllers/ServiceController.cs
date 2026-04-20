@@ -24,7 +24,7 @@ namespace MavinsBarberBooking.Controllers
             string sql = @"
             SELECT 
                 s.ServiceId, s.Name, s.DurationMinutes, s.Price, s.Details, s.ServiceImage,
-                b.Name AS BarberName
+                b.Name AS BarberName, b.BarberId -- <-- Ensure b.BarberId is selected
             FROM Services s
             INNER JOIN BarberServices bs ON s.ServiceId = bs.ServiceId
             INNER JOIN Barbers b ON bs.BarberId = b.BarberId";

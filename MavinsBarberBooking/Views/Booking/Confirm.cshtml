@@ -1,0 +1,138 @@
+﻿@model MavinsBarberBooking.Controllers.BookingViewModel
+
+@{
+    ViewData["Title"] = "Booking Confirmation";
+    Layout = "_Layout";
+
+    var durationDisplay = Model.DurationMinutes >= 60
+        ? $"{Model.DurationMinutes / 60} hr " + (Model.DurationMinutes % 60 > 0 ? $"{Model.DurationMinutes % 60} min" : "")
+        : $"{Model.DurationMinutes} min";
+
+    DateTime parsedDate;
+    string formattedDate = DateTime.TryParse(Model.SelectedDate, out parsedDate)
+        ? parsedDate.ToString("dddd dd MMMM yyyy")
+        : Model.SelectedDate ?? "";
+}
+
+<div class="container-fluid px-4 px-lg-5 pt-2 pb-5">
+    <div class="mx-auto" style="max-width: 1200px;">
+        <h1 class="display-4 fw-bolder text-dark mb-4" style="letter-spacing: -2px;">Confirm Appointment</h1>
+
+        <div class="row g-4">
+            <!-- Left Column: Form & Policies -->
+            <div class="col-lg-7">
+                <div class="glass-panel p-4 text-white d-flex flex-column h-100">
+                    <form method="get" action="/Booking/Payment" class="d-flex flex-column gap-3 mb-4">
+                        <input type="hidden" asp-for="ServiceId" />
+                        <input type="hidden" asp-for="BarberId" />
+                        <input type="hidden" asp-for="SelectedDate" />
+                        <input type="hidden" asp-for="SelectedTime" />
+
+                        <div>
+                            <label class="form-label fw-bold mb-1">Full Name</label>
+                            <input type="text" asp-for="CustomerName" class="form-control bg-secondary bg-opacity-25 border-secondary text-white placeholder-opacity-75" placeholder="Enter your fullname" />
+                            <span asp-validation-for="CustomerName" class="text-danger small fw-light d-block mt-1" style="color: #FF2222 !important;"></span>
+                        </div>
+
+                        <div>
+                            <label class="form-label fw-bold mb-1">Phone No.</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-secondary bg-opacity-25 border-secondary text-white">+63</span>
+                                <input type="tel" asp-for="CustomerPhone" class="form-control bg-secondary bg-opacity-25 border-secondary text-white" placeholder="9123456789" />
+                            </div>
+                            <span asp-validation-for="CustomerPhone" class="text-danger small fw-light d-block mt-1" style="color: #FF2222 !important;"></span>
+                        </div>
+
+                        <div>
+                            <label class="form-label fw-bold mb-1">Email</label>
+                            <input type="email" asp-for="CustomerEmail" class="form-control bg-secondary bg-opacity-25 border-secondary text-white placeholder-opacity-75" placeholder="Enter your email" />
+                            <span asp-validation-for="CustomerEmail" class="text-danger small fw-light d-block mt-1" style="color: #FF2222 !important;"></span>
+                        </div>
+
+                        <div>
+                            <label class="form-label fw-bold mb-1">Comments</label>
+                            <textarea asp-for="Comments" class="form-control bg-secondary bg-opacity-25 border-secondary text-white" rows="4"></textarea>
+                            <span asp-validation-for="Comments" class="text-danger small fw-light d-block mt-1" style="color: #FF2222 !important;"></span>
+                        </div>
+
+                        <div class="mt-2">
+                            <button type="submit" class="btn btn-secondary px-5 fw-bold rounded-pill text-white">Confirm</button>
+                        </div>
+                    </form>
+
+                    <!-- Policies Section -->
+                    <div class="bg-secondary bg-opacity-25 p-3 rounded-3 mt-auto border border-secondary border-opacity-25">
+                        <div class="mb-3">
+                            <h6 class="fw-bold mb-1 fs-6">Booking policy:</h6>
+                            <p class="small opacity-75 mb-0">Please arrive 15 minutes prior to your appointment. This gives us adequate time to provide you w/ the finest service possible.<br>Additionally, clients have 24 hours to cancel their appointment, otherwise half of barber's rate have to be paid. Thank you!</p>
+                        </div>
+                        <div class="mb-3">
+                            <h6 class="fw-bold mb-1 fs-6">Cancellation policy:</h6>
+                            <p class="small opacity-75 mb-0">You can cancel or reschedule up to 24 hours before the appointment time.</p>
+                        </div>
+                        <div>
+                            <h6 class="fw-bold mb-1 fs-6">Additional information:</h6>
+                            <p class="small opacity-75 mb-0">When booking with Mavins Barbershop, you may receive appointment-specific communication from Mavins Barbershop Website. This includes confirmations, receipts and reminders via email and SMS.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Summary -->
+            <div class="col-lg-5 d-flex flex-column gap-4">
+                <!-- Shop Info -->
+                <div class="glass-panel p-4 text-center text-white">
+                    <img src="~/images/gallery/gallery-image-mavins-logo.webp" alt="Mavins Barbershop Logo" class="rounded-circle mb-3 bg-white p-1" style="width: 120px; height: 120px; object-fit: cover;">
+                    <h2 class="fw-bold fs-3 mb-2">Mavins Barbershop</h2>
+                    <a href="#" class="text-white opacity-75 small text-decoration-underline lh-base d-inline-block px-3">
+                        #78 Mavins Barbershop, Gonzales Ave., San Juan,<br>Apalit, Pampanga Apalit, Pampanga 2016
+                    </a>
+                </div>
+
+                <!-- Booking Summary -->
+                <div class="glass-panel p-4 text-white flex-grow-1 position-relative">
+                    <h2 class="fw-bold fs-4 mb-4">Summary</h2>
+
+                    <a href="/Booking/Index?serviceId=@Model.ServiceId&barberId=@Model.BarberId" class="position-absolute top-0 end-0 mt-4 me-4 text-white text-decoration-none">
+                        <i class="fa-regular fa-pen-to-square fs-5"></i>
+                    </a>
+
+                    <div class="mb-4">
+                        <p class="mb-0 fw-bold fs-5">@Model.SelectedTime</p>
+                        <p class="small opacity-75 mb-0">@formattedDate</p>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-start mb-1">
+                        <div>
+                            <p class="mb-0 fw-medium">@Model.ServiceName by @Model.BarberName</p>
+                            <p class="small opacity-75 mb-0">@durationDisplay &middot; with Barber-@Model.BarberName</p>
+                        </div>
+                        <span class="fw-bold">&#8369;@Model.Price.ToString("0")</span>
+                    </div>
+
+                    <hr class="border-secondary my-4">
+
+                    <div class="d-flex justify-content-between align-items-center fw-bold fs-5">
+                        <span>Total to pay</span>
+                        <span>&#8369;@Model.Price.ToString("0")</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .glass-panel {
+        background: rgba(80, 80, 80, 0.4);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 15px;
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+
+    ::placeholder {
+        color: rgba(255, 255, 255, 0.5) !important;
+    }
+</style>
