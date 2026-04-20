@@ -21,7 +21,7 @@
                     </p>
 
                     <div class="mt-5 d-flex gap-3">
-                        <button class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">BOOK NOW</button>
+                        <button onclick="window.location.href='/Barber/Index'" class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">BOOK NOW</button>
                         @if (!(User.Identity != null && User.Identity.IsAuthenticated))
                         {
                             <button onclick="window.location.href='/Account/Login'" class="btn rounded-0 px-4 py-3 fw-bold fs-5 custom-dark-btn text-white">LOG IN</button>
