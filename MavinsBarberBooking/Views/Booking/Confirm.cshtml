@@ -30,7 +30,26 @@
 
                         <div>
                             <label class="form-label fw-bold mb-1">Full Name</label>
-                            <input type="text" asp-for="CustomerName" class="form-control bg-secondary bg-opacity-25 border-secondary text-white placeholder-opacity-75" placeholder="Enter your fullname" />
+                            @{
+                                var fullName = "";
+                                var email = "";
+
+                                // Check if user is authenticated AND in the "Customer" role
+                                if (User?.Identity?.IsAuthenticated == true && User.IsInRole("Customer"))
+                                {
+                                    // Extract FullName claim
+                                    fullName = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Name)?.Value ?? "";
+
+                                    // Extract Email claim (tries standard ClaimTypes first, falls back to a custom "Email" string)
+                                    email = User.Claims.FirstOrDefault(c => c.Type == System.Security.Claims.ClaimTypes.Email)?.Value
+                                    ?? User.Claims.FirstOrDefault(c => c.Type == "Email")?.Value ?? "";
+                                }
+
+                                // If the variables are not empty, set the locks to true
+                                var lockName = !string.IsNullOrEmpty(fullName);
+                                var lockEmail = !string.IsNullOrEmpty(email);
+                            }
+                            <input value="@fullName" readonly="@lockName" type="text" asp-for="CustomerName" class="form-control bg-secondary bg-opacity-25 border-secondary text-white placeholder-opacity-75" placeholder="Enter your fullname" />
                             <span asp-validation-for="CustomerName" class="text-danger small fw-light d-block mt-1" style="color: #FF2222 !important;"></span>
                         </div>
 
@@ -45,7 +64,7 @@
 
                         <div>
                             <label class="form-label fw-bold mb-1">Email</label>
-                            <input type="email" asp-for="CustomerEmail" class="form-control bg-secondary bg-opacity-25 border-secondary text-white placeholder-opacity-75" placeholder="Enter your email" />
+                            <input value="@email" readonly="@lockEmail" type="email" asp-for="CustomerEmail" class="form-control bg-secondary bg-opacity-25 border-secondary text-white placeholder-opacity-75" placeholder="Enter your email" />
                             <span asp-validation-for="CustomerEmail" class="text-danger small fw-light d-block mt-1" style="color: #FF2222 !important;"></span>
                         </div>
 
@@ -58,6 +77,7 @@
                         <div class="mt-2">
                             <button type="submit" class="btn btn-secondary px-5 fw-bold rounded-pill text-white">Confirm</button>
                         </div>
+                        
                     </form>
 
                     <!-- Policies Section -->

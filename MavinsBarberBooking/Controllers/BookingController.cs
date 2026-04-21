@@ -6,7 +6,6 @@ using MavinsBarberBooking.Models;
 using MavinsBarberBooking.Models.Entities;
 using MavinsBarberBooking.Models.ViewModels;
 
-
 namespace MavinsBarberBooking.Controllers
 {
     public class BookingController : Controller
