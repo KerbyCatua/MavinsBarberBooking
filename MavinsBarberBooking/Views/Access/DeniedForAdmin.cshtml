@@ -1,0 +1,80 @@
+﻿@{
+    ViewData["Title"] = "Restricted for Admin";
+    Layout = "_AuthLayout";
+}
+
+<style>
+    .text-dark-custom {
+        color: white;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .text-muted-custom {
+        color: rgba(255,255,255,0.8);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        max-width: 450px;
+    }
+
+    .btn-dark-custom {
+        background-color: black;
+        color: white;
+        border-radius: 5px;
+        font-weight: 600;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-dark-custom:hover {
+            transform: translateY(-2px);
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+    .decor {
+        position: absolute;
+        stroke: black;
+        pointer-events: none;
+    }
+
+    .plug-illustration svg {
+        width: 100%;
+        max-width: 320px;
+        height: auto;
+    }
+</style>
+
+<main class="min-vh-100 d-flex align-items-center justify-content-center position-relative overflow-hidden">
+    <div class="position-absolute w-100 h-100" style="z-index: 0; pointer-events: none;">
+        <svg class="decor" style="top:15%; right:15%; width:90px;" viewBox="0 0 100 100" fill="none" stroke-width="4"><circle cx="50" cy="50" r="48" /></svg>
+        <svg class="decor" style="bottom:15%; left:20%; width:70px;" viewBox="0 0 100 100" fill="none" stroke-width="4"><circle cx="50" cy="50" r="48" /></svg>
+        <svg class="decor" style="top:25%; left:30%; width:28px;" viewBox="0 0 24 24" fill="none" stroke-width="6" stroke-linecap="round"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="20" y1="4" x2="4" y2="20"></line></svg>
+    </div>
+
+    <div class="container z-1">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-5 d-flex justify-content-center pe-md-5 mb-5 mb-md-0">
+                <div class="plug-illustration">
+                    <svg viewBox="0 0 200 150" fill="none">
+                        <path d="M10,140 Q40,40 90,80 T130,80" stroke="black" stroke-width="4" fill="none" />
+                        <path d="M190,10 Q160,110 110,70 T70,70" stroke="black" stroke-width="4" fill="none" />
+                        <rect x="120" y="65" width="25" height="30" rx="4" fill="black" />
+                        <path d="M60 65 H80 V95 H60 A10 10 0 0 1 50 85 V75 A10 10 0 0 1 60 65 Z" fill="black" />
+                    </svg>
+                </div>
+            </div>
+            <div class="col-md-7 text-center text-md-start">
+                <h1 class="display-4 text-dark-custom mb-3">Administrative Access Only</h1>
+                <p class="text-muted-custom mb-4">
+                    Notice: You are currently attempting to access a customer-facing area.
+                    Please use the management dashboard to perform administrative tasks or manage shop settings.
+                </p>
+                <a href="/Admin/Index" class="btn btn-dark-custom">Return to Admin Panel</a>
+            </div>
+        </div>
+    </div>
+</main>

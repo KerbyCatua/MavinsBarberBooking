@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Restricted for Customer";
+    Layout = "_AuthLayout";
+}
+
+<style>
+    .text-dark-custom {
+        color: white;
+        font-weight: 700;
+        letter-spacing: -1px;
+    }
+
+    .text-muted-custom {
+        color: rgba(255,255,255,0.8);
+        font-size: 1.1rem;
+        line-height: 1.6;
+        max-width: 450px;
+    }
+
+    .btn-dark-custom {
+        background-color: black;
+        color: white;
+        border-radius: 5px;
+        font-weight: 600;
+        padding: 12px 30px;
+        transition: all 0.3s ease;
+        border: none;
+        text-decoration: none;
+        display: inline-block;
+    }
+
+        .btn-dark-custom:hover {
+            transform: translateY(-2px);
+            background-color: #1a1a1a;
+            color: white;
+        }
+
+    .decor {
+        position: absolute;
+        stroke: black;
+        pointer-events: none;
+    }
+</style>
+
+<main class="min-vh-100 d-flex align-items-center justify-content-center position-relative overflow-hidden">
+    <div class="position-absolute w-100 h-100" style="pointer-events: none;">
+        <svg class="decor" style="top:20%; right:20%; width:60px;" viewBox="0 0 100 100" fill="none" stroke-width="4"><circle cx="50" cy="50" r="48" /></svg>
+        <svg class="decor" style="bottom:10%; left:15%; width:50px;" viewBox="0 0 24 24" fill="none" stroke-width="6"><line x1="4" y1="4" x2="20" y2="20"></line><line x1="20" y1="4" x2="4" y2="20"></line></svg>
+    </div>
+
+    <div class="container z-1 p-5">
+        <div class="row align-items-center justify-content-center">
+            <div class="col-md-7 text-center text-md-start">
+                <h1 class="display-4 text-dark-custom mb-3">Looking for something?</h1>
+                <p class="text-muted-custom mb-4 mx-auto mx-md-0">
+                    This area is reserved for <strong>Barber Staff and Management</strong>.
+                    To book an appointment, check your loyalty points, or manage your profile, please return to the main page.
+                </p>
+                <a href="/Home/Index" class="btn btn-dark-custom">Back to Booking</a>
+            </div>
+        </div>
+    </div>
+</main>

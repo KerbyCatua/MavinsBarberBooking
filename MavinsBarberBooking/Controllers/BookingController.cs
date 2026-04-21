@@ -56,6 +56,10 @@ namespace MavinsBarberBooking.Controllers
         [HttpGet]
         public async Task<IActionResult> Index(int serviceId, int barberId)
         {
+            // Role-based access control: Only Customers can book appointments
+            if (User.IsInRole("Admin")) return RedirectToAction("DeniedForAdmin", "Access");
+            if (User.IsInRole("Barber")) return RedirectToAction("DeniedForBarber", "Access");
+
             // Fallback to fetch barber if not explicitly provided
             if (barberId == 0)
             {
