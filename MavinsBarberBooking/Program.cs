@@ -58,7 +58,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
             OnValidatePrincipal = async context =>
             {
                 // Get the SessionToken from the incoming cookie
-                var sessionTokenClaim = context.Principal.FindFirst("SessionToken");
+                var sessionTokenClaim = context.Principal?.FindFirst("SessionToken");
 
                 if (sessionTokenClaim != null)
                 {
@@ -266,6 +266,39 @@ using (var scope = app.Services.CreateScope())
             END
         ";
 
+        // --- NEW TABLES BASED ON ERD ---
+        string CustomersSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Customers')
+            BEGIN
+                CREATE TABLE Customers (
+                    CustomerId INT PRIMARY KEY IDENTITY(1,1),
+                    UserId INT NOT NULL,
+                    Address NVARCHAR(255) NULL,
+                    DateOfBirth DATE NULL,
+                    FOREIGN KEY (UserId) REFERENCES Users(Id) ON DELETE CASCADE
+                );
+            END
+        ";
+
+        string BookingsSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Bookings')
+            BEGIN
+                CREATE TABLE Bookings (
+                    BookingId INT PRIMARY KEY IDENTITY(1,1),
+                    CustomerId INT NOT NULL,
+                    BarberId INT NOT NULL,
+                    ServiceId INT NOT NULL,
+                    BookingDate DATE NOT NULL,
+                    StartTime TIME NOT NULL,
+                    EndTime TIME NOT NULL,
+                    Status NVARCHAR(50) NOT NULL DEFAULT 'Upcoming',
+                    FOREIGN KEY (CustomerId) REFERENCES Customers(CustomerId),
+                    FOREIGN KEY (BarberId) REFERENCES Barbers(BarberId),
+                    FOREIGN KEY (ServiceId) REFERENCES Services(ServiceId)
+                );
+            END
+        ";
+
         // You can add more CREATE TABLE scripts here for your Barbershop system
 
         // Execute them in the CORRECT order (Parents first, then Children)
@@ -293,6 +326,12 @@ using (var scope = app.Services.CreateScope())
 
         command.CommandText = TimeSlotsSql;
         command.ExecuteNonQuery();
+
+        command.CommandText = CustomersSql; // Needs Users
+        command.ExecuteNonQuery();
+
+        command.CommandText = BookingsSql;  // Needs Customers, Barbers, Services
+        command.ExecuteNonQuery(); 
     }
     catch (Exception ex)
     {

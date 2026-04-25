@@ -3,21 +3,85 @@
     Layout = "_Layout";
 }
 
-<div class="container">
-    <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
-        <div class="col-12 col-md-8 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h1 class="card-title mb-2">Payment Page</h1>
-                    <p class="text-muted mb-4">We are currently working on this page.</p>
+<div class="container py-5">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <a href="#" class="btn btn-sm btn-outline-dark rounded-0 mb-3 px-3 d-inline-flex align-items-center">
+                <span class="me-2">&larr;</span> Back to Booking
+            </a>
+            <h2 class="fw-bold text-dark mb-1">Payment</h2>
+            <p class="text-muted small">Mavins Barber Booking</p>
+        </div>
+    </div>
 
-                    <div class="row justify-content-center">
-                        <div class="col-auto">
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Home</a>
-                        </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8 col-lg-6 col-xl-5">
+            <div class="card border-dark rounded-0 shadow-sm">
+
+                <div class="card-header bg-light text-dark border-bottom border-dark p-4">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h6 class="mb-0 fw-bold text-uppercase letter-spacing-tight">Order Summary</h6>
+                        <span class="badge border border-dark text-dark rounded-0 px-2 py-1 text-uppercase" style="letter-spacing: 0.5px;">
+                            <span class="spinner-grow spinner-grow-sm me-1" role="status" style="width: 0.5rem; height: 0.5rem;"></span>
+                            Awaiting Payment
+                        </span>
+                    </div>
+                    <hr class="border-dark opacity-25 my-3">
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">Service:</span>
+                        <span class="fw-medium text-dark small">Fade with Pompadour</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-1">
+                        <span class="text-muted small">Barber:</span>
+                        <span class="fw-medium text-dark small">Kerby</span>
+                    </div>
+                    <div class="d-flex justify-content-between mt-3 pt-3 border-top border-dark border-opacity-25">
+                        <span class="fw-bold text-uppercase">Total Due:</span>
+                        <span class="fw-bold fs-5">₱ 350.00</span>
                     </div>
                 </div>
+
+                <div class="card-body text-center p-4 p-xl-5">
+
+                    <h5 class="fw-bold mb-3">Pay via GCash</h5>
+                    <p class="text-muted small mb-4">Scan the QR code below using your GCash app to complete your appointment booking.</p>
+
+                    <div class="d-inline-block border border-2 border-dark p-3 mb-4 bg-white shadow-sm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/d/d0/QR_code_for_mobile_English_Wikipedia.svg"
+                             alt="Dynamic GCash QR Code"
+                             class="img-fluid"
+                             style="width: 200px; height: 200px; object-fit: contain;">
+                    </div>
+
+                    <div class="bg-light border border-dark p-3 mb-4 text-start">
+                        <div class="d-flex align-items-center mb-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history me-2" viewBox="0 0 16 16">
+                                <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z" />
+                                <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z" />
+                                <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z" />
+                            </svg>
+                            <span class="fw-bold text-dark text-uppercase small" style="letter-spacing: 0.5px;">QR Code Validity</span>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-1 ms-4">Valid for 24 Hours</h5>
+                        <p class="text-muted small mb-0 ms-4" style="font-size: 0.7rem;">Please complete the payment within this timeframe to secure your slot.</p>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="button" class="btn btn-dark rounded-0 fw-bold py-2">
+                            I Have Paid
+                        </button>
+                        <button type="button" class="btn btn-outline-dark rounded-0 py-2">
+                            Cancel Booking
+                        </button>
+                    </div>
+
+                </div>
             </div>
+
+            <div class="text-center mt-3">
+                <small class="text-muted"><i class="bi bi-shield-lock me-1"></i>Secure transaction processed by GCash.</small>
+            </div>
+
         </div>
     </div>
 </div>

@@ -1,22 +1,185 @@
-﻿@{
+﻿@model MavinsBarberBooking.Models.ViewModels.CustomerProfileViewModel
+
+@{
     ViewData["Title"] = "Customer Profile";
-    Layout = "_AuthLayout";
+    Layout = "_Layout";
 }
 
-<div class="container">
-    <div class="row justify-content-center align-items-center" style="min-height: 60vh;">
-        <div class="col-12 col-md-8 col-lg-6">
-            <div class="card shadow-sm">
-                <div class="card-body text-center">
-                    <h1 class="card-title mb-2">Customer Profile</h1>
-                    <p class="text-muted mb-4">We are currently working on this page.</p>
+<style>
+    body, .bg-auth-wrapper {
+        background-color: #2b2b2b !important; /* Adjust if your layout overrides body bg */
+    }
 
-                    <div class="row justify-content-center">
-                        <div class="col-auto">
-                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-secondary">Back to Home</a>
-                        </div>
+    .profile-card-top {
+        background-color: #8D8D8D;
+        border-radius: 12px;
+    }
+
+    .profile-card-bottom {
+        background-color: #555555;
+        border-radius: 12px;
+        color: white;
+    }
+
+    .info-label {
+        font-size: 0.8rem;
+        font-weight: bold;
+        color: #d1d1d1;
+    }
+
+    .info-value {
+        font-size: 0.9rem;
+        color: white;
+    }
+
+    .btn-edit-profile {
+        background-color: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: white;
+    }
+
+        .btn-edit-profile:hover {
+            background-color: rgba(255, 255, 255, 0.4);
+            color: white;
+        }
+
+    .appointment-item {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        border-radius: 8px;
+    }
+
+    .table-history th {
+        font-weight: 600;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        color: #d1d1d1;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        padding-bottom: 15px;
+    }
+
+    .table-history td {
+        color: white;
+        border-bottom: none;
+        padding-top: 15px;
+    }
+
+    .btn-status-completed {
+        background-color: transparent;
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: white;
+        pointer-events: none;
+    }
+</style>
+
+<div class="container py-4">
+
+    <!-- Top Card: User Info -->
+    <div class="profile-card-top p-4 p-md-5 mb-4 position-relative shadow-sm text-white">
+        <div class="row align-items-center">
+            <div class="col-auto">
+                <img src="https://media.istockphoto.com/id/1682296067/photo/happy-studio-portrait-or-professional-man-real-estate-agent-or-asian-businessman-smile-for.jpg?s=612x612&w=0&k=20&c=9zbG2-9fl741fbTWw5fNgcEEe4ll-JegrGlQQ6m54rg="
+                     alt="Customer Avatar"
+                     class="rounded-circle border border-white border-2"
+                     style="width: 130px; height: 130px; object-fit: cover;">
+            </div>
+            <div class="col">
+                <h2 class="fw-bold mb-0">@Model.FirstName @Model.LastName</h2>
+                <h6 class="mb-2">@Model.Role</h6>
+                <span class="badge bg-success bg-opacity-75 text-white border border-white rounded-pill px-3 py-1 mb-3">
+                    @(Model.IsActive ? "ACTIVE" : "INACTIVE")
+                </span>
+
+                <div class="row g-2">
+                    <div class="col-12">
+                        <span class="info-label d-block mb-0">Email Address</span>
+                        <span class="info-value">@Model.Email</span>
+                    </div>
+                    <div class="col-12 mt-2">
+                        <span class="info-label d-block mb-0">Phone No.</span>
+                        <span class="info-value">@(string.IsNullOrEmpty(Model.PhoneNumber) ? "Not Provided" : Model.PhoneNumber)</span>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div class="position-absolute bottom-0 end-0 p-4">
+            <button class="btn btn-edit-profile rounded-pill px-4 py-2">Edit Profile</button>
+        </div>
+    </div>
+
+    <div class="row g-4">
+        <!-- Upcoming Appointment -->
+        <div class="col-lg-5">
+            <div class="profile-card-bottom p-4 h-100 shadow-sm">
+                <h4 class="fw-bold mb-4">Upcoming Appointment</h4>
+
+                @if (Model.UpcomingAppointments.Any())
+                {
+                    @foreach (var appt in Model.UpcomingAppointments)
+                    {
+                        <div class="appointment-item p-3 mb-3 d-flex justify-content-between align-items-center">
+                            <div>
+                                <h6 class="fw-bold mb-1">@appt.ServiceName</h6>
+                                <p class="mb-0 text-white-50" style="font-size: 0.85rem;">Barber: @appt.BarberName</p>
+                            </div>
+                            <div class="text-end">
+                                <h6 class="mb-0 fw-bold" style="font-size: 0.9rem;">@appt.BookingDate.ToString("MMMM dd, yyyy")</h6>
+                                <p class="mb-2 text-white-50" style="font-size: 0.8rem;">
+                                    @DateTime.Today.Add(appt.StartTime).ToString("hh:mm tt")
+                                </p>
+                                <button class="btn btn-sm btn-edit-profile rounded-pill px-3">Cancel</button>
+                            </div>
+                        </div>
+                    }
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <p class="text-white-50 mb-0">No upcoming appointments.</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Booking History -->
+        <div class="col-lg-7">
+            <div class="profile-card-bottom p-4 h-100 shadow-sm">
+                <h4 class="fw-bold mb-4">Booking History</h4>
+
+                @if (Model.BookingHistory.Any())
+                {
+                    <div class="table-responsive">
+                        <table class="table table-borderless table-history align-middle text-center mb-0">
+                            <thead>
+                                <tr>
+                                    <th class="text-start">DATE</th>
+                                    <th>SERVICE</th>
+                                    <th>BARBER</th>
+                                    <th>STATUS</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var history in Model.BookingHistory)
+                                {
+                                    <tr>
+                                        <td class="text-start">@history.BookingDate.ToString("MMM dd, yyyy")</td>
+                                        <td>@history.ServiceName</td>
+                                        <td>@history.BarberName</td>
+                                        <td>
+                                            <span class="btn btn-sm btn-status-completed rounded-1 px-3">@history.Status</span>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <p class="text-white-50 mb-0">No booking history yet.</p>
+                    </div>
+                }
             </div>
         </div>
     </div>
