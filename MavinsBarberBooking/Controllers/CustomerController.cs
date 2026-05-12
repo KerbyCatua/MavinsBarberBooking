@@ -14,12 +14,12 @@ namespace MavinsBarberBooking.Controllers
         private readonly IDbConnection _db;
         public CustomerController(IDbConnection db) { _db = db; }
 
-        // Role-based access control: Only Customers can access the profile page
-        //if (User.IsInRole("Admin")) return RedirectToAction("DeniedForAdmin", "Access");
-        //if (User.IsInRole("Barber")) return RedirectToAction("DeniedForBarber", "Access");
-
         public async Task<IActionResult> Profile()
         {
+            // Role-based access control: Only Customers can access the profile page
+            if (User.IsInRole("Admin")) return RedirectToAction("DeniedForAdmin", "Access");
+            if (User.IsInRole("Barber")) return RedirectToAction("DeniedForBarber", "Access");
+
             var userEmail = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value;
 
             if (string.IsNullOrEmpty(userEmail)) return RedirectToAction("Login", "Account");

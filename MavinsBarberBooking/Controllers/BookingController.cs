@@ -138,7 +138,7 @@ namespace MavinsBarberBooking.Controllers
 
             // 1. Math for Pass-On Fee (GCash fee is 2.5%)
             // TENTATIVE AMOUNT FOR TESTING PURPOSES ONLY - PLEASE REPLACE WITH ACTUAL SERVICE PRICE
-            decimal targetAmount = 01.00m; // The exact amount YOU receive
+            decimal targetAmount = 50.00m; // The exact amount YOU receive
             decimal feePercentage = 0.000m;
             decimal grossAmount = Math.Round(targetAmount / (1 - feePercentage), 2); // Customer pays ~₱51.28
             decimal feeAmount = grossAmount - targetAmount; // ~₱1.28
@@ -169,17 +169,31 @@ namespace MavinsBarberBooking.Controllers
 
             // 3. Call PayMongo API
             var secretKey = _config["PayMongo:SecretKey"];
+            var domain = $"{Request.Scheme}://{Request.Host}";
+
             var payload = new
             {
                 data = new
                 {
                     attributes = new
                     {
-                        amount = amountInCents,
-                        description = "Mavins Barbershop - Downpayment",
-                        remarks = bookingId.ToString(),
-                        payment_method_allowed = new[] { "gcash", "paymaya" },
-                        currency = "PHP"
+                        send_email_receipt = false,
+                        show_description = true,
+                        show_line_items = true,
+                        success_url = $"{domain}/customer/profile",
+                        cancel_url = $"{domain}/",
+                        payment_method_types = new[] { "gcash", "paymaya" },
+                        reference_number = bookingId.ToString(), // Used to trace the booking
+                        line_items = new[]
+                              {
+                            new
+                            {
+                                currency = "PHP",
+                                amount = amountInCents,
+                                name = "Mavins Barbershop - Downpayment",
+                                quantity = 1
+                            }
+                        }
                     }
                 }
             };
@@ -187,9 +201,13 @@ namespace MavinsBarberBooking.Controllers
             using var client = new HttpClient();
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.ASCII.GetBytes(secretKey + ":")));
 
-            var response = await client.PostAsJsonAsync("https://api.paymongo.com/v1/links", payload);
+
+            // Change from v1/links to v1/checkout_sessions
+            var response = await client.PostAsJsonAsync("https://api.paymongo.com/v1/checkout_sessions", payload);
             var responseString = await response.Content.ReadAsStringAsync();
             using var jsonDocument = JsonDocument.Parse(responseString);
+
+            // Extract the checkout URL from the updated response format
             var checkoutUrl = jsonDocument.RootElement.GetProperty("data").GetProperty("attributes").GetProperty("checkout_url").GetString();
 
             string barberQuery = "SELECT Name FROM Barbers WHERE BarberId = @BarberId";

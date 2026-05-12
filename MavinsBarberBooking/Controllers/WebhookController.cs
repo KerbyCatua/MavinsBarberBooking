@@ -52,10 +52,12 @@ namespace MavinsBarberBooking.Controllers
                 var eventType = jsonDocument.RootElement.GetProperty("data").GetProperty("attributes").GetProperty("type").GetString();
 
                 // 4. Update the Database using Dapper
-                if (eventType == "link.payment.paid")
+                if (eventType == "checkout_session.payment.paid")
                 {
                     var attributes = jsonDocument.RootElement.GetProperty("data").GetProperty("attributes").GetProperty("data").GetProperty("attributes");
-                    var bookingIdStr = attributes.GetProperty("remarks").GetString(); // This matches the remarks we sent earlier!
+
+                    // Fetch the booking ID from the reference_number we set in the payload
+                    var bookingIdStr = attributes.GetProperty("reference_number").GetString();
 
                     if (int.TryParse(bookingIdStr, out int bookingId))
                     {
