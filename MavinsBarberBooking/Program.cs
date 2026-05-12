@@ -299,6 +299,21 @@ using (var scope = app.Services.CreateScope())
             END
         ";
 
+        string PaymentsSql = @"
+            IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Payments')
+            BEGIN
+                CREATE TABLE Payments (
+                    PaymentId INT PRIMARY KEY IDENTITY(1,1),
+                    BookingId INT NOT NULL,
+                    Amount DECIMAL(10, 2) NOT NULL,
+                    PaymentMethod NVARCHAR(50) NOT NULL,
+                    PaymentStatus BIT NOT NULL DEFAULT 0, /* 0 = Pending, 1 = Paid */
+                    TransactionDate DATETIME NOT NULL DEFAULT GETDATE(),
+                    FOREIGN KEY (BookingId) REFERENCES Bookings(BookingId) ON DELETE CASCADE
+                );
+            END
+        ";
+
         // You can add more CREATE TABLE scripts here for your Barbershop system
 
         // Execute them in the CORRECT order (Parents first, then Children)
@@ -331,7 +346,10 @@ using (var scope = app.Services.CreateScope())
         command.ExecuteNonQuery();
 
         command.CommandText = BookingsSql;  // Needs Customers, Barbers, Services
-        command.ExecuteNonQuery(); 
+        command.ExecuteNonQuery();
+
+        command.CommandText = PaymentsSql;  // Needs Bookings
+        command.ExecuteNonQuery();
     }
     catch (Exception ex)
     {

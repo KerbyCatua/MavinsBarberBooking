@@ -45,8 +45,8 @@
                 <a href="@RouteUserProfile">Profile</a>
                 <a href="#">Notifications</a>
                 <a href="#">Settings</a>
-                <a href="#">Help</a>
-                <a href="#">Share</a>
+                <a href="/#gallery-section" onclick="toggleSidebar()">Gallery</a>
+                <a href="#" onclick="copyUrlAndNotify(event)">Share</a>
             </div>
 
             <hr class="sidebar-divider" />
@@ -71,10 +71,10 @@
             <hr class="sidebar-divider" />
 
             <div class="sidebar-nav-links">
-                <a href="#">Services</a>
-                <a href="#">Our Barbers</a>
-                <a href="#">Gallery</a>
-                <a href="#">Share</a>
+                <a href="/Service/Index">Services</a>
+                <a href="/Barber/Index">Our Barbers</a>
+                <a href="/#gallery-section" onclick="toggleSidebar()">Gallery</a>
+                <a href="#" onclick="copyUrlAndNotify(event)">Share</a>
             </div>
 
             <hr class="sidebar-divider" />
@@ -107,5 +107,21 @@
 
         sidebar.classList.toggle("open");
         overlay.classList.toggle("active");
+    }
+
+    function copyUrlAndNotify(e) {
+        e.preventDefault(); // Prevent page from jumping to top
+
+        // Get the base URL of your site
+        var siteUrl = window.location.origin;
+
+        // Copy to clipboard
+        navigator.clipboard.writeText(siteUrl).then(function () {
+            // Once copied, redirect to the server to set TempData and reload
+            var currentPath = window.location.pathname + window.location.search;
+            window.location.href = '/Home/ShareLink?returnUrl=' + encodeURIComponent(currentPath);
+        }).catch(function(err) {
+            console.error('Could not copy text: ', err);
+        });
     }
 </script>

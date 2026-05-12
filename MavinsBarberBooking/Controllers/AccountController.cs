@@ -131,15 +131,15 @@ namespace MavinsBarberBooking.Controllers
                 "UPDATE EmailVerifications SET IsUsed = 1 WHERE Id = @Id",
                 new { verification.Id });
 
-            // Create the user account
+            // Create the user account AND get the newly generated User Id
             string passwordHash = BCrypt.Net.BCrypt.HashPassword(HttpContext.Session.GetString("TempPassword"));
 
-            string sql = @"INSERT INTO Users
-                           (FirstName, LastName, Email, PasswordHash, PhoneNumber, CreatedAt, IsActive, Role)
-                           VALUES
-                           (@FirstName, @LastName, @Email, @PasswordHash, @PhoneNumber, GETDATE(), 1, 'Customer')";
+            string insertUserSql = @"
+            INSERT INTO Users (FirstName, LastName, Email, PasswordHash, PhoneNumber, CreatedAt, IsActive, Role)
+            OUTPUT INSERTED.Id
+            VALUES (@FirstName, @LastName, @Email, @PasswordHash, @PhoneNumber, GETDATE(), 1, 'Customer')";
 
-            _db.Execute(sql, new
+            int newUserId = _db.QuerySingle<int>(insertUserSql, new
             {
                 FirstName = HttpContext.Session.GetString("TempFirstName"),
                 LastName = HttpContext.Session.GetString("TempLastName"),
@@ -147,6 +147,10 @@ namespace MavinsBarberBooking.Controllers
                 PasswordHash = passwordHash,
                 PhoneNumber = ""
             });
+
+            // Immediately create the corresponding Customer record
+            string insertCustomerSql = "INSERT INTO Customers (UserId) VALUES (@UserId)";
+            _db.Execute(insertCustomerSql, new { UserId = newUserId });
 
             // Clear session
             HttpContext.Session.Clear();

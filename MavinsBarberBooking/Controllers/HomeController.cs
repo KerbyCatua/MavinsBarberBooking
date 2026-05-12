@@ -13,6 +13,16 @@ namespace MavinsBarberBooking.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
+        public IActionResult ShareLink(string returnUrl = "/")
+        {
+            // Set the TempData message for your snackbar
+            TempData["Message"] = "Website URL successfully copied to clipboard!";
+
+            // Redirect back to the page the user was on
+            return LocalRedirect(returnUrl);
+        }
+
         public IActionResult Index()
         {
             return View();

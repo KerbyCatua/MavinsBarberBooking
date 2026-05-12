@@ -22,7 +22,7 @@
             <!-- Left Column: Form & Policies -->
             <div class="col-lg-7">
                 <div class="glass-panel p-4 text-white d-flex flex-column h-100">
-                    <form method="get" action="/Booking/Payment" class="d-flex flex-column gap-3 mb-4">
+                    <form asp-action="Payment" asp-controller="Booking" method="post" class="d-flex flex-column gap-3 mb-4">
                         <input type="hidden" asp-for="ServiceId" />
                         <input type="hidden" asp-for="BarberId" />
                         <input type="hidden" asp-for="SelectedDate" />
